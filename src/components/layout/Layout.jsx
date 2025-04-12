@@ -11,7 +11,7 @@ const Layout = () => {
       <div className='flex'>
         <CustomSidebar setBroken={setBroken} toggled={toggled} setToggled={setToggled}/>
 
-        <div className='w-full border'>
+        <div className='w-full '>
           <Header broken={broken} setToggled={setToggled} />
           
         <Outlet />

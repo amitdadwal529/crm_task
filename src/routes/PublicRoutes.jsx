@@ -6,7 +6,7 @@ import { PRIVATE_ROUTES } from "@routes/routes";
 const PublicRoutes = ({ element }) => {
     //  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
             // Redirect to Dashboard if authenticated
-            const isAuthenticated = false;
+            const isAuthenticated = true;
      return isAuthenticated ? <Navigate to={PRIVATE_ROUTES.DASHBOARD} /> :element ;
  
   };
