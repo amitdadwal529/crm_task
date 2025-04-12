@@ -9,6 +9,7 @@ import Products from "@pages/products/Products";
 import AddProduct from "@pages/products/AddProduct";
 import UpdateProduct from "@pages/products/UpdateProduct";
 import ProductDetail from "@pages/products/ProductDetail";
+import NotFound from "@pages/notFound/NotFound";
 
 const AppRoutes = createBrowserRouter([
     {
@@ -52,6 +53,8 @@ const AppRoutes = createBrowserRouter([
   
     {
       path: "*",
-      element: <NotFound />,
+      element: <NotFound/>,
     },
   ]);
+
+  export default AppRoutes;

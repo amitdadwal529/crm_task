@@ -1,6 +1,5 @@
 import "@assets/css/global.css";
 import "@assets/css/style.css";
-import "@assets/css/responsive.css";
 import AppRoutes from "@routes/AppRoutes";
 import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
