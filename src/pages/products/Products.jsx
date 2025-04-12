@@ -1,9 +1,10 @@
 import React from 'react'
+import ProductTable from './ProductTable'
 
 const Products = () => {
   return (
     <div>
-      Products
+      <ProductTable/>
     </div>
   )
 }
