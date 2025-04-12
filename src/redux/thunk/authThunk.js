@@ -1,9 +1,8 @@
-// redux/authThunks.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import authService from '@services/authServices'; 
-
-export const login = createAsyncThunk(
-  'auth/signInUser',
+import authService from '@services/authService'; 
+ 
+const login = createAsyncThunk(
+  'auth/login',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await authService.signIn(userData); 
@@ -16,7 +15,7 @@ export const login = createAsyncThunk(
 );
 
 
-export const getMyDetails = createAsyncThunk("auth/getMyDetails", async (id, { rejectWithValue }) => {
+const getMyDetails = createAsyncThunk("auth/getMyDetails", async (id, { rejectWithValue }) => {
    
   try {
       const response = await authService.getMyDetails(id);
@@ -26,3 +25,8 @@ export const getMyDetails = createAsyncThunk("auth/getMyDetails", async (id, { r
   }
 
 })
+
+export default {
+    login,
+    getMyDetails
+}
