@@ -4,7 +4,7 @@ import { PUBLIC_ROUTES } from "./routes";
 const PrivateRoute = ({ element}) => {
 //   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
     // Redirect to login if not authenticated
-    const isAuthenticated = true;
+    const isAuthenticated = false;
   return !isAuthenticated ? <Navigate to={PUBLIC_ROUTES.LOG_IN} />:element ;
 };
 
