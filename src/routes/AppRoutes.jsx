@@ -2,7 +2,7 @@ import PrivateRoute from "@routes/PrivateRoutes";
 import PublicRoutes from "@routes/PublicRoutes";
 import Login from "@pages/auth/Login";
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from "@routes/routes";
-import Layout from "@components/layout/DashboardLayout";
+import Layout from "@components/layout/Layout";
 import Dashboard from "@pages/dashboard/Dashboard";
 import { createBrowserRouter } from "react-router-dom";
 import Products from "@pages/products/Products";
@@ -10,11 +10,13 @@ import AddProduct from "@pages/products/AddProduct";
 import UpdateProduct from "@pages/products/UpdateProduct";
 import ProductDetail from "@pages/products/ProductDetail";
 import NotFound from "@pages/notFound/NotFound";
+import Error from "@pages/error/Error";
 
 const AppRoutes = createBrowserRouter([
     {
       path: PRIVATE_ROUTES.DASHBOARD,
       element: <Layout />,
+      errorElement: <Error/>, 
       children: [
 
         // Dashboard Route
@@ -49,6 +51,7 @@ const AppRoutes = createBrowserRouter([
     {
       path: PUBLIC_ROUTES.LOG_IN,
       element: <PublicRoutes element={<Login/>} />,
+      errorElement: <Error/>, 
     },
   
     {
