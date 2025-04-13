@@ -13,7 +13,13 @@ import {
 } from "chart.js";
 import { Bar, Line, Pie } from "react-chartjs-2";
 
-// Register Chart.js components
+// Reusable UI card component for metrics
+import MetricCard from "@components/ui/dashboard/MetricCard";
+
+// Chart data imported from utility file
+import { rankingsData, newLostCustomerData, customerImpressionsData ,customerTrafficSourcesData} from "@utils/chartData";
+
+// Register Chart.js components globally
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -26,68 +32,7 @@ ChartJS.register(
   Title
 );
 
-// Data for charts
-const rankingsData = {
-  labels: ["Oct 18", "Oct 26", "Nov 4", "Nov 8", "Nov 16"],
-  datasets: [
-    {
-      label: "1-3",
-      data: [4, 6, 7, 5, 6],
-      backgroundColor: "#4ade80",
-    },
-    {
-      label: "4-10",
-      data: [5, 4, 3, 6, 5],
-      backgroundColor: "#facc15",
-    },
-    {
-      label: "11-20",
-      data: [6, 5, 4, 4, 3],
-      backgroundColor: "#f87171",
-    },
-  ],
-};
 
-const newLostLinksData = {
-  labels: ["Apr 5", "Apr 12", "Apr 19", "Apr 26"],
-  datasets: [
-    {
-      label: "New",
-      data: [1500, 1800, 2000, 1700],
-      backgroundColor: "#34d399",
-    },
-    {
-      label: "Lost",
-      data: [800, 1000, 1200, 950],
-      backgroundColor: "#f87171",
-    },
-  ],
-};
-
-const impressionsData = {
-  labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
-  datasets: [
-    {
-      label: "Impressions",
-      data: [200000, 210000, 250000, 262000],
-      borderColor: "#3b82f6",
-      backgroundColor: "rgba(59, 130, 246, 0.2)",
-      fill: true,
-      tension: 0.4,
-    },
-  ],
-};
-
-const trafficSourcesData = {
-  labels: ["Organic", "Referral", "Direct", "Social"],
-  datasets: [
-    {
-      data: [45, 25, 20, 10],
-      backgroundColor: ["#34d399", "#60a5fa", "#facc15", "#f87171"],
-      borderWidth: 1,
-    },
-  ],
-};
 
 const Dashboard = () => {
   return (
@@ -97,81 +42,61 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-xl shadow">
-          <h2 className="font-semibold mb-2">Google Rankings</h2>
-          <div className="text-lg">10</div>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow">
-          <h2 className="font-semibold mb-2">Google Change</h2>
-          <div className="text-green-500 text-lg">+4</div>
-        </div>
+            {/* Metric Cards Section */}
+        <MetricCard title="Total Sales" value="₹1,24,500" color="text-green-600" />
+        <MetricCard title="Customer Feedback" value="4.3 / 5" color="text-yellow-500" />
+        <MetricCard title="New Customers" value="320" color="text-blue-500" />
+        <MetricCard title="Returning Customers" value="180" color="text-purple-500" />
+     
+            {/* Bar Chart: Sales Overview */}
         <div className="bg-white p-4 rounded-xl shadow col-span-2">
-          <h2 className="font-semibold mb-2">Sessions</h2>
-          <div className="text-2xl font-bold">2,787</div>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl shadow">
-          <h2 className="font-semibold mb-2">Performance Score</h2>
-          <div className="text-yellow-500 text-3xl">70</div>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow">
-          <h2 className="font-semibold mb-2">SEO Score</h2>
-          <div className="text-red-500 text-3xl">40</div>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow">
-          <h2 className="font-semibold mb-2">Accessibility</h2>
-          <div className="text-yellow-400 text-3xl">80</div>
-        </div>
-        <div className="bg-white p-4 rounded-xl shadow">
-          <h2 className="font-semibold mb-2">Best Practices</h2>
-          <div className="text-green-500 text-3xl">90</div>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl shadow">
-          <h2 className="font-semibold mb-2">Goal Completions</h2>
-          <div className="text-2xl font-bold">3,306</div>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl shadow col-span-2">
-          <h2 className="font-semibold mb-2">Google Rankings Overview</h2>
+          <h2 className="font-semibold mb-2">Sales Overview</h2>
           <Bar
             data={rankingsData}
             options={{
               responsive: true,
               plugins: { legend: { position: "bottom" } },
             }}
+            key={JSON.stringify(rankingsData)} // prevent canvas reuse error
           />
         </div>
+
+            {/* Pie Chart: Customer Traffic Sources */}
         <div className="bg-white p-4 rounded-xl shadow col-span-2 md:col-span-1">
           <h2 className="font-semibold mb-2">Traffic Sources</h2>
           <Pie
-            data={trafficSourcesData}
+            data={customerTrafficSourcesData}
             options={{
               responsive: true,
               plugins: { legend: { position: "bottom" } },
             }}
+            key={JSON.stringify(customerTrafficSourcesData)} // prevent canvas reuse error
           />
         </div>
 
+            {/* Bar Chart: New vs Lost Customers */}
         <div className="bg-white p-4 rounded-xl shadow col-span-2">
-          <h2 className="font-semibold mb-2">New/Lost Links</h2>
+          <h2 className="font-semibold mb-2">New/Lost Customer</h2>
           <Bar
-            data={newLostLinksData}
+            data={newLostCustomerData}
             options={{
               responsive: true,
               plugins: { legend: { position: "bottom" } },
             }}
+            key={JSON.stringify(newLostCustomerData)} // prevent canvas reuse error
           />
         </div>
 
+               {/* Line Chart: Customer Impressions Trend */}       
         <div className="bg-white p-4 rounded-xl shadow col-span-2">
-          <h2 className="font-semibold mb-2">Impressions</h2>
+          <h2 className="font-semibold mb-2">Customer Impressions</h2>
           <Line
-            data={impressionsData}
+            data={customerImpressionsData}
             options={{
               responsive: true,
               plugins: { legend: { position: "bottom" } },
             }}
+            key={JSON.stringify(customerImpressionsData)} // prevent canvas reuse error
           />
         </div>
 
