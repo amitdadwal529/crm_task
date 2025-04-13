@@ -59,7 +59,7 @@ const ProductTable = () => {
             <ProductTableHeader table={table} />
             <ProductTableBody table={table} />
           </table>
-          <div className=''>
+          <div>
             <ProductTablePagination table={table} />
           </div>
         </div>

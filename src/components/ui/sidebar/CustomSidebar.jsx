@@ -36,12 +36,12 @@ export const CustomSidebar = (props) => {
    // Function to check if the current path is active
    const isActive = (path) => {
   
-    return location.pathname.replace(/\/$/, '') === path.replace(/\/$/, '') ? 'bg-gray-200' : '';
+    return location.pathname.replace(/\/$/, '') === path.replace(/\/$/, '') ? '' : '';
   };
 
   // Function to check if any submenu under the current main menu is active
   const isSubMenuActive = (subMenu) => {
-    return subMenu.some(item => location.pathname.replace(/\/$/, '') === item.path.replace(/\/$/, '')) ? 'bg-gray-200' : '';
+    return subMenu.some(item => location.pathname.replace(/\/$/, '') === item.path.replace(/\/$/, '')) ? '' : '';
   };
 
   return (
@@ -52,7 +52,6 @@ export const CustomSidebar = (props) => {
         onBackdropClick={() => setToggled(false)}
         onBreakPoint={setBroken}
         breakPoint="md"
-        backgroundColor="#ffffff"
         rootStyles={{
           color: '#607489',
         }}

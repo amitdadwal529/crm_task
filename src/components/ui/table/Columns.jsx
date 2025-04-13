@@ -6,7 +6,7 @@ import { PRIVATE_ROUTES } from '@routes/routes';
 import { generateRoute } from '@utils/utils';
 
 const columnHelper = createColumnHelper();
- const GetProductTableColumns = (openModal) => [
+const GetProductTableColumns = (openModal) => [
   columnHelper.accessor('thumbnail', {
     header: 'Product',
     cell: info => <img src={info.row.original.thumbnail} alt="" className='w-14 h-14' />,
@@ -30,11 +30,12 @@ const columnHelper = createColumnHelper();
   columnHelper.accessor('availabilityStatus', {
     header: 'Status',
     cell: info => (
-      <span className={`px-4 py-0.5 rounded-2xl shadow-lg ${
-        info.row.original.availabilityStatus === 'Low Stock'
-          ? 'bg-amber-300'
-          : 'bg-green-300'
-      }`}>
+      <span className={`px-4 py-0.5 rounded-2xl shadow-lg ${info.row.original.availabilityStatus === 'Low Stock' ?
+          'bg-amber-300' :
+          info.row.original.availabilityStatus === 'Out of Stock' ?
+            "bg-red-400" :
+            'bg-green-300'
+        }`}>
         {info.row.original.availabilityStatus}
       </span>
     ),
