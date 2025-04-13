@@ -6,6 +6,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getProductDetail } from '@redux/thunk/productThunk';
 import Spinner from '@components/ui/loader/Spinner';
 import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from 'react-icons/io';
+import Back from '@components/ui/button/Back';
 
 const ProductDetail = () => {
   const [activeTab, setActiveTab] = useState('details'); // State for active tab
@@ -45,6 +46,7 @@ const ProductDetail = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
+    <Back/>
       <div className="flex items-center mb-6">
         <img src={productInfo?.thumbnail} alt={productInfo?.title} className="w-48 h-48 object-cover rounded-md" />
         <div className="ml-6">
