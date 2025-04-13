@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
   createColumnHelper,
+  getPaginationRowModel
 } from '@tanstack/react-table';
 import { FaEye, FaTrash } from 'react-icons/fa';
 import { AiFillEdit } from "react-icons/ai";
@@ -14,14 +15,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct, getProducts } from '@redux/thunk/productThunk';
 import Delete from '@components/ui/modal/Delete';
 import Spinner from '@components/ui/loader/Spinner';
-import Pagination from '@components/ui/table/Pagination';
 
 
 const ProductTable = () => {
   const dispatch = useDispatch();
   const{products, loading, total} = useSelector((state)=>state.product);
-  const [currentPage, setCurrentPage] = useState(1);
-  const limit = 10;
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
   const selectedProduct = useRef(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -42,13 +45,9 @@ const ProductTable = () => {
   };
 
   useEffect(() => {
-    const skip = (currentPage - 1) * limit;
-    const query = `?limit=${limit}&skip=${skip}`;
-    dispatch(getProducts(query));
-  }, [dispatch, currentPage]);
-
-  const totalPages = Math.ceil(total / limit);
-
+    const skip = pagination.pageIndex * pagination.pageSize;
+    dispatch(getProducts(`?skip=${skip}&limit=${pagination.pageSize}`));
+  }, [dispatch, pagination.pageIndex, pagination.pageSize]);
 
   const columnHelper = createColumnHelper();
 
@@ -109,7 +108,14 @@ const ProductTable = () => {
   const table = useReactTable({
     data: products,
     columns,
+    pageCount: Math.ceil(total / pagination.pageSize),
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
+    manualPagination: true,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -142,10 +148,43 @@ const ProductTable = () => {
           ))}
         </tbody>
       </table>
-      <Pagination
-            totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
-          />
+
+    {/* Pagination Controls */}
+      <div className="flex items-center justify-between mt-4">
+        <button
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<<'}
+        </button>
+
+        <button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<'}
+        </button>
+
+        <span>
+          Page <strong>{table.getState().pagination.pageIndex + 1}</strong> of{' '}
+          {table.getPageCount()}
+        </span>
+
+        <button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>'}
+        </button>
+
+        <button
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>>'}
+        </button>
+
+      </div>
       {
         showModal && 
           <Delete
