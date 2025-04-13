@@ -6,13 +6,18 @@ const login = async (userData) => {
   return response;
 };
 
-const refreshToken = async(token)=>{
-    
+const refreshAccessToken = async()=>{
+  const refreshToken = localStorage.getItem("refreshToken");
   const response = await handleRequest("POST",AUTH.REFRESH_TOKEN,{
-    "refresh_token":token
+    "refresh_token":refreshToken
 } );
-  return response;
+
+localStorage.setItem("token", response.accessToken);
+localStorage.setItem("refreshToken", response.refreshToken);
+
+return response.accessToken;
 }
+
 
 const getMyDetails  = async (id=null) => {
 
@@ -29,6 +34,6 @@ if(id!=null){
 
 export default {
   login,
-  refreshToken,
+  refreshAccessToken,
   getMyDetails
 };

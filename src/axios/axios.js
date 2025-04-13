@@ -1,28 +1,16 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { AUTH } from "@config/config";
+import { AUTH, BASE_URL } from "@config/config";
+import authService from "@services/authService";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: BASE_URL,
   headers: {
     "Content-Type": 'application/json',
   },
 });
 
-// Function to refresh the access token
-const refreshAccessToken = async () => {
-  try {
-    const refreshToken = localStorage.getItem("refreshToken");
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}${AUTH.REFRESH_TOKEN}`, { "refreshToken":refreshToken });
-    localStorage.setItem("token", response.data.accessToken);
-    localStorage.setItem("refreshToken", response.data.accessToken);
 
-    return response.data.accessToken;
-  } catch (error) {
-    console.error("Refresh token error:", error);
-    throw error;
-  }
-};
 
 // Interceptor to add token to request
 axiosInstance.interceptors.request.use(
@@ -48,7 +36,7 @@ axiosInstance.interceptors.response.use(
     if (status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        const newAccessToken = await refreshAccessToken();
+        const newAccessToken = await authService.refreshAccessToken();
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest); // Retry the original request with the new token
       } catch (refreshError) {
