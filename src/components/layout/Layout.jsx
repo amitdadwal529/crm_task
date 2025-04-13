@@ -13,7 +13,7 @@ const Layout = () => {
 
         <div className='w-full '>
           <Header broken={broken} setToggled={setToggled} />
-          <div className="p-6 bg-gray-100 min-h-screen">
+          <div className="p-2 bg-gray-100 min-h-screen">
 
         <Outlet />
         </div>

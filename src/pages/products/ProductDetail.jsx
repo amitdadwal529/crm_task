@@ -1,35 +1,58 @@
 import { PRIVATE_ROUTES } from '@routes/routes';
 import { generateRoute } from '@utils/utils';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { getProductDetail } from '@redux/thunk/productThunk';
 import Spinner from '@components/ui/loader/Spinner';
+import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from 'react-icons/io';
 
 const ProductDetail = () => {
+  const [activeTab, setActiveTab] = useState('details'); // State for active tab
+
+  const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<IoMdStar key={`full-${i}`} className="text-yellow-500 inline text-lg" />);
+    }
+
+    if (halfStar) {
+      stars.push(<IoMdStarHalf key="half" className="text-yellow-500 inline text-lg" />);
+    }
+
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<IoMdStarOutline key={`empty-${i}`} className="text-yellow-500 inline text-lg" />);
+    }
+
+    return stars;
+  };
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const { productInfo, loading } = useSelector((state) => state.product);
+
   useEffect(() => {
     if (id) {
       dispatch(getProductDetail(id));
     }
   }, [id, dispatch]);
-  console.log(productInfo, "product info")
 
-  // Loading state
-  if (loading) return <Spinner/>;
+  if (loading) return <Spinner />;
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">
       <div className="flex items-center mb-6">
         <img src={productInfo?.thumbnail} alt={productInfo?.title} className="w-48 h-48 object-cover rounded-md" />
         <div className="ml-6">
-          <h2 className="text-3xl font-semibold text-gray-800">{productInfo?.title}</h2>
-          <p className="text-lg text-gray-600">{productInfo?.category}</p>
+          <h2 className="text-2xl font-semibold text-gray-800">{productInfo?.title}</h2>
+          <p className="text-md text-gray-500 mt-2">{productInfo?.description}</p>
           <p className="text-xl text-gray-900 font-semibold mt-2">${productInfo?.price}</p>
           <p className="text-sm text-gray-600 mt-1">
-            Rating: <span className="font-semibold">{productInfo?.rating}</span> | Stock: {productInfo?.stock}
+            {renderStars(productInfo?.rating)}
           </p>
           <div className="mt-4">
             <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-md">{productInfo?.availabilityStatus}</span>
@@ -37,72 +60,92 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      <div className="mt-8">
-        <h3 className="text-2xl font-semibold text-gray-800">Description</h3>
-        <p className="text-lg text-gray-600 mt-2">{productInfo?.description}</p>
+      {/* Tab Navigation */}
+      <div className="mt-6 flex border-b border-gray-300">
+        <button
+          className={`py-2 px-4 text-md font-normal  ${activeTab === 'details' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
+          onClick={() => setActiveTab('details')}
+        >
+          Details
+        </button>
+        <button
+          className={`py-2 px-4 text-md font-normal  ${activeTab === 'reviews' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
+          onClick={() => setActiveTab('reviews')}
+        >
+          Reviews & Ratings
+        </button>
       </div>
 
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div>
-          <h3 className="text-xl font-semibold text-gray-800">Brand</h3>
-          <p className="text-lg text-gray-600 mt-2">{productInfo?.brand}</p>
-        </div>
-        <div>
-          <h3 className="text-xl font-semibold text-gray-800">SKU</h3>
-          <p className="text-lg text-gray-600 mt-2">{productInfo?.sku}</p>
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold text-gray-800">Dimensions</h3>
-        <ul className="list-disc pl-6 text-lg text-gray-600 mt-2">
-          <li>Width: {productInfo?.dimensions?.width} cm</li>
-          <li>Height: {productInfo?.dimensions?.height} cm</li>
-          <li>Depth: {productInfo?.dimensions?.depth} cm</li>
-        </ul>
-      </div>
-
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold text-gray-800">Warranty Information</h3>
-        <p className="text-lg text-gray-600 mt-2">{productInfo?.warrantyInformation}</p>
-      </div>
-
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold text-gray-800">Shipping Information</h3>
-        <p className="text-lg text-gray-600 mt-2">{productInfo?.shippingInformation}</p>
-      </div>
-
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold text-gray-800">Return Policy</h3>
-        <p className="text-lg text-gray-600 mt-2">{productInfo?.returnPolicy}</p>
-      </div>
-
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold text-gray-800">Tags</h3>
-        <div className="flex flex-wrap gap-2 mt-2">
-          {productInfo?.tags?.map((tag, index) => (
-            <span key={index} className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">{tag}</span>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-8">
-        <h3 className="text-xl font-semibold text-gray-800">Reviews</h3>
-        <div className="mt-4">
-          {productInfo?.reviews?.map((review, index) => (
-            <div key={index} className="border-b pb-4 mb-4">
-              <p className="font-semibold text-lg">{review.reviewerName}</p>
-              <p className="text-gray-600">Rating: {review.rating}</p>
-              <p className="text-gray-800 mt-2">{review.comment}</p>
-              <p className="text-sm text-gray-500 mt-2">{new Date(review.date).toLocaleDateString()}</p>
+      {/* Tab Content */}
+      <div className="mt-6">
+        {activeTab === 'details' ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800">Brand</h3>
+                <p className="text-md text-gray-600 ">{productInfo?.brand}</p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800">SKU</h3>
+                <p className="text-lg text-gray-600 ">{productInfo?.sku}</p>
+              </div>
             </div>
-          ))}
-        </div>
+
+            <div className="mt-8">
+              <h3 className="text-xl font-semibold text-gray-800">Dimensions</h3>
+              <ul className="list-disc pl-6 text-lg text-gray-600 mt-2">
+                <li>Width: {productInfo?.dimensions?.width} cm</li>
+                <li>Height: {productInfo?.dimensions?.height} cm</li>
+                <li>Depth: {productInfo?.dimensions?.depth} cm</li>
+              </ul>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-xl font-semibold text-gray-800">Warranty Information</h3>
+              <p className="text-lg text-gray-600 mt-2">{productInfo?.warrantyInformation}</p>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-xl font-semibold text-gray-800">Shipping Information</h3>
+              <p className="text-lg text-gray-600 mt-2">{productInfo?.shippingInformation}</p>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-xl font-semibold text-gray-800">Return Policy</h3>
+              <p className="text-lg text-gray-600 mt-2">{productInfo?.returnPolicy}</p>
+            </div>
+
+            <div className="mt-8">
+              <h3 className="text-xl font-semibold text-gray-800">Tags</h3>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {productInfo?.tags?.map((tag, index) => (
+                  <span key={index} className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">{tag}</span>
+                ))}
+              </div>
+            </div>
+          </>
+        ) : (
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800">Reviews</h3>
+            <div className="mt-4">
+              {productInfo?.reviews?.map((review, index) => (
+                <div key={index} className="bg-gray-100 shadow-xl rounded-xl p-2 mb-4">
+                  <p className="font-semibold text-lg">{review.reviewerName}</p>
+                  <p className="text-gray-600">
+                    {renderStars(review.rating)}
+                  </p>
+                  <p className="text-gray-800 mt-2">{review.comment}</p>
+                  <p className="text-sm text-gray-500 mt-2">{new Date(review.date).toLocaleDateString()}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-8">
         <Link
-            to={generateRoute(PRIVATE_ROUTES.UPDATE_PRODUCT, { id:id})}
+          to={generateRoute(PRIVATE_ROUTES.UPDATE_PRODUCT, { id: id })}
           className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
         >
           Update Product
