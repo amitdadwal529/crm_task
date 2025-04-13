@@ -80,49 +80,51 @@ const ProductDetail = () => {
       <div className="mt-6">
         {activeTab === 'details' ? (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               <div>
                 <h3 className="text-lg font-semibold text-gray-800">Brand</h3>
                 <p className="text-md text-gray-600 ">{productInfo?.brand}</p>
               </div>
+
               <div>
                 <h3 className="text-lg font-semibold text-gray-800">SKU</h3>
-                <p className="text-lg text-gray-600 ">{productInfo?.sku}</p>
+                <p className="text-md text-gray-600 ">{productInfo?.sku}</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Dimensions</h3>
+                <ul className="list-disc pl-6 text-lg text-gray-600 mt-2">
+                  <li>Width: {productInfo?.dimensions?.width} cm</li>
+                  <li>Height: {productInfo?.dimensions?.height} cm</li>
+                  <li>Depth: {productInfo?.dimensions?.depth} cm</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Warranty Information</h3>
+                <p className="text-lg text-gray-600 mt-2">{productInfo?.warrantyInformation}</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Shipping Information</h3>
+                <p className="text-lg text-gray-600 mt-2">{productInfo?.shippingInformation}</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Return Policy</h3>
+                <p className="text-lg text-gray-600 mt-2">{productInfo?.returnPolicy}</p>
+              </div>
+
+              <div >
+                <h3 className="text-xl font-semibold text-gray-800">Tags</h3>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {productInfo?.tags?.map((tag, index) => (
+                    <span key={index} className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">{tag}</span>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <div className="mt-8">
-              <h3 className="text-xl font-semibold text-gray-800">Dimensions</h3>
-              <ul className="list-disc pl-6 text-lg text-gray-600 mt-2">
-                <li>Width: {productInfo?.dimensions?.width} cm</li>
-                <li>Height: {productInfo?.dimensions?.height} cm</li>
-                <li>Depth: {productInfo?.dimensions?.depth} cm</li>
-              </ul>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-xl font-semibold text-gray-800">Warranty Information</h3>
-              <p className="text-lg text-gray-600 mt-2">{productInfo?.warrantyInformation}</p>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-xl font-semibold text-gray-800">Shipping Information</h3>
-              <p className="text-lg text-gray-600 mt-2">{productInfo?.shippingInformation}</p>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-xl font-semibold text-gray-800">Return Policy</h3>
-              <p className="text-lg text-gray-600 mt-2">{productInfo?.returnPolicy}</p>
-            </div>
-
-            <div className="mt-8">
-              <h3 className="text-xl font-semibold text-gray-800">Tags</h3>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {productInfo?.tags?.map((tag, index) => (
-                  <span key={index} className="bg-blue-500 text-white text-xs px-2 py-1 rounded-md">{tag}</span>
-                ))}
-              </div>
-            </div>
           </>
         ) : (
           <div>
