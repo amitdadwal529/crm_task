@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { AUTH } from "@config/config";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -11,9 +12,11 @@ const axiosInstance = axios.create({
 // Function to refresh the access token
 const refreshAccessToken = async () => {
   try {
-    const refreshToken = localStorage.getItem("token");
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/refresh-token`, { "refreshToken":refreshToken });
-    localStorage.setItem("token", response.data.accessToken); // Update the new access token
+    const refreshToken = localStorage.getItem("refreshToken");
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}${AUTH.REFRESH_TOKEN}`, { "refreshToken":refreshToken });
+    localStorage.setItem("token", response.data.accessToken);
+    localStorage.setItem("refreshToken", response.data.accessToken);
+
     return response.data.accessToken;
   } catch (error) {
     console.error("Refresh token error:", error);
@@ -70,7 +73,6 @@ const handleRequest = async (method, url, data = null, isMultipart = false) => {
         ? { method, url, headers }
         : { method, url, data, headers }
     );
-   
     return response;
   } catch (error) {
     const status = error?.response?.status;

@@ -65,17 +65,13 @@ export const CustomSidebar = (props) => {
           >
            {menuItems.map((menuItem, index) => (
       menuItem.subMenu.length === 0 ? (
-        <Link
-          key={index}
-          to={menuItem.path}
         
-        >
-          <MenuItem className={isActive(menuItem.path)}>
+          <MenuItem key={index} className={isActive(menuItem.path)} component={<Link to={menuItem.path} />}>
             <p className="flex items-center gap-3 ml-2">
               {menuItem.icon} {menuItem.label}
             </p>
           </MenuItem>
-        </Link>
+       
       ) : (
         <SubMenu
           key={index}
@@ -84,17 +80,12 @@ export const CustomSidebar = (props) => {
           className={isActive(menuItem.path) || isSubMenuActive(menuItem.subMenu)}
         >
           {menuItem.subMenu.map((subMenuItem, subIndex) => (
-            <Link
-              key={subIndex}
-              to={subMenuItem.path}
-             
-            >
-              <MenuItem className={isActive(subMenuItem.path)}>
+           
+              <MenuItem key={`subMenu${subIndex}`} className={isActive(subMenuItem.path)} component={ <Link to={subMenuItem.path}/>}>
                 <p className="flex items-center gap-1">
                   <GoDotFill className="text-red-500 mx-2" /> {subMenuItem.label}
                 </p>
               </MenuItem>
-            </Link>
           ))}
         </SubMenu>
       )

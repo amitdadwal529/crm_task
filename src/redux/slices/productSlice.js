@@ -1,4 +1,4 @@
-import productThunk from "@redux/thunk/productThunk";
+import { addProduct, deleteProduct, getProductDetail, getProducts } from "@redux/thunk/productThunk";
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
@@ -21,11 +21,11 @@ export const productSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(productThunk.getProducts.pending, (state) => {
+        .addCase(getProducts.pending, (state) => {
             state.loading = true;
             state.error = null;
         })
-        .addCase(productThunk.getProducts.fulfilled, (state, action) => {
+        .addCase(getProducts.fulfilled, (state, action) => {
             if(action.payload.code == 200){
                 state.productlist = action.payload?.data;
                 state.loading = false;
@@ -35,18 +35,18 @@ export const productSlice = createSlice({
             }
            
         })
-        .addCase(productThunk.getProducts.rejected, (state, action) => {
+        .addCase(getProducts.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
             toast.error(action.payload);
         })
 
         // add product
-        .addCase(productThunk.addProduct.pending, (state) => {
+        .addCase(addProduct.pending, (state) => {
             state.loading = true;
             state.error = null;
         })
-        .addCase(productThunk.addProduct.fulfilled, (state, action) => {
+        .addCase(addProduct.fulfilled, (state, action) => {
         
             if(action.payload.success == true){
                 state.success = true;
@@ -58,7 +58,7 @@ export const productSlice = createSlice({
             }
            
         })
-        .addCase(productThunk.addProduct.rejected, (state, action) => {
+        .addCase(addProduct.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.error = action.payload;
@@ -66,11 +66,11 @@ export const productSlice = createSlice({
         })
 
         // delete product
-        .addCase(productThunk.deleteProduct.pending, (state) => {
+        .addCase(deleteProduct.pending, (state) => {
             state.loading = true;
             state.error = null;
         })
-        .addCase(productThunk.deleteProduct.fulfilled, (state, action) => {
+        .addCase(deleteProduct.fulfilled, (state, action) => {
         
             if(action.payload.success == true){
                 state.success = true;
@@ -82,18 +82,18 @@ export const productSlice = createSlice({
             }
            
         })
-        .addCase(productThunk.deleteProduct.rejected, (state, action) => {
+        .addCase(deleteProduct.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.error = action.payload;
             toast.error(action.payload);
         })
         // get product details
-        .addCase(productThunk.getProductDetail.pending, (state) => {
+        .addCase(getProductDetail.pending, (state) => {
             state.loading = true;
             state.error = null;
         })
-        .addCase(productThunk.getProductDetail.fulfilled, (state, action) => {
+        .addCase(getProductDetail.fulfilled, (state, action) => {
             if(action.payload.code == 200){
                 state.productInfo = action.payload?.data;
                 state.loading = false;
@@ -103,7 +103,7 @@ export const productSlice = createSlice({
             }
            
         })
-        .addCase(productThunk.getProductDetail.rejected, (state, action) => {
+        .addCase(getProductDetail.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
             toast.error(action.payload);

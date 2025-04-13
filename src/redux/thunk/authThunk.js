@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import authService from '@services/authService'; 
  
-const login = createAsyncThunk(
+export const login = createAsyncThunk(
   'auth/login',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await authService.signIn(userData); 
+      const response = await authService.login(userData); 
    
       return response;
     } catch (error) {
@@ -15,7 +15,7 @@ const login = createAsyncThunk(
 );
 
 
-const getMyDetails = createAsyncThunk("auth/getMyDetails", async (id, { rejectWithValue }) => {
+export const getMyDetails = createAsyncThunk("auth/getMyDetails", async (id, { rejectWithValue }) => {
    
   try {
       const response = await authService.getMyDetails(id);
@@ -26,7 +26,3 @@ const getMyDetails = createAsyncThunk("auth/getMyDetails", async (id, { rejectWi
 
 })
 
-export default {
-    login,
-    getMyDetails
-}

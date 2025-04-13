@@ -12,6 +12,6 @@ export const PRIVATE_ROUTES = {
       // Product Management Routes
       PRODUCTS: "/product/products",
       ADD_PRODUCT: "/product/add-product",         
-      PRODUCT_DETAIL: "/product/product-detail",
-      UPDATE_PRODUCT: "/product/update-product",
+      PRODUCT_DETAIL: "/product/product-detail/:id",
+      UPDATE_PRODUCT: "/product/update-product/:id",
 }
