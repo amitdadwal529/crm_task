@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -11,12 +11,32 @@ import { Link } from 'react-router-dom';
 import { generateRoute } from '@utils/utils';
 import { PRIVATE_ROUTES } from '@routes/routes';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '@redux/thunk/productThunk';
+import { deleteProduct, getProducts } from '@redux/thunk/productThunk';
+import Delete from '@components/ui/modal/Delete';
+import Spinner from '@components/ui/loader/Spinner';
 
 
 const ProductTable = () => {
   const dispatch = useDispatch();
-  const{products} = useSelector((state)=>state.product)
+  const{products, loading} = useSelector((state)=>state.product);
+  const selectedProduct = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = (id) => {
+    selectedProduct.current = id;
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    selectedProduct.current = null;
+    setShowModal(false);
+  };
+
+  const handledelete= () => {
+    const id = selectedProduct.current;
+    dispatch(deleteProduct(id))
+    closeModal();
+  };
 
   useEffect(() => {
     dispatch(getProducts())
@@ -68,7 +88,9 @@ const ProductTable = () => {
           <AiFillEdit className='text-blue-900 cursor-pointer' />
         </Link>
        
-          <FaTrash className='text-blue-900 cursor-pointer' />
+        <span onClick={() => openModal(info.row.original.id)}>
+    <FaTrash className='text-blue-900 cursor-pointer' />
+  </span>
         
           </div>,
       }),
@@ -83,7 +105,11 @@ const ProductTable = () => {
   });
 
   return (
-    <div className="overflow-x-auto bg-white rounded-lg shadow">
+    <>
+
+    {
+      loading ? <Spinner/>:
+      <div className="overflow-x-auto bg-white rounded-lg shadow">
       <table className="min-w-full border border-gray-200">
         <thead className="bg-gray-200 text-gray-700">
           {table.getHeaderGroups().map(headerGroup => (
@@ -108,7 +134,20 @@ const ProductTable = () => {
           ))}
         </tbody>
       </table>
+      {
+        showModal && 
+          <Delete
+            isOpen={showModal}
+        title="product"
+        onClose={closeModal}
+        onDelete={handledelete}
+          />
+        
+      }
     </div>
+    }
+    </>
+   
   );
 };
 

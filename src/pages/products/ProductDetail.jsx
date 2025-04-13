@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import { getProductDetail } from '@redux/thunk/productThunk';
+import Spinner from '@components/ui/loader/Spinner';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const ProductDetail = () => {
   console.log(productInfo, "product info")
 
   // Loading state
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) return <Spinner/>;
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-8">

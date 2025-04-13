@@ -23,7 +23,7 @@ const updateProduct = async (id,data) => {
 const deleteProduct = async (id) => {
   
    
-    const response = await handleRequest("DELETE", PRODUCTS.DELETE+"/"+id);
+    const response = await handleRequest("DELETE", generateRoute(PRODUCTS.DELETE, {id:id}));
     return response;
 };
 

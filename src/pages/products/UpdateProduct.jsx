@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductDetail, updateProduct } from '@redux/thunk/productThunk';
+import Spinner from '@components/ui/loader/Spinner';
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -76,7 +77,7 @@ const UpdateProduct = () => {
     dispatch(updateProduct({ id: id, data: data }));
   };
 
-  if (loading) return <p className="text-center py-10">Loading...</p>;
+  if (loading) return <Spinner/>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
@@ -198,12 +199,13 @@ const UpdateProduct = () => {
         </div>
 
         {/* Submit */}
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 text-right">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md w-full"
+            className=" bg-blue-600 hover:bg-blue-700 opacity-100 text-white p-3 mt-3 rounded-md hover:opacity-90 transition"
+
           >
-            Update Product
+            Update
           </button>
         </div>
       </form>

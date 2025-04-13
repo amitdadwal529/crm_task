@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '@redux/thunk/productThunk';
+import { useNavigate } from 'react-router-dom';
+import PrivateRoute from '@routes/PrivateRoutes';
+import { PRIVATE_ROUTES } from '@routes/routes';
+import Spinner from '@components/ui/loader/Spinner';
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -48,11 +52,14 @@ const schema = yup.object().shape({
 
 const AddProduct = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {success, loading} = useSelector((state)=>state.product);
  
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -87,9 +94,19 @@ const AddProduct = () => {
     data.dimensions.depth = Number(data.dimensions.depth);
 
     dispatch(addProduct(data))
+    reset();
   };
 
+  useEffect(()=>{
+    if(success){
+      reset();
+    }
+  },[success, reset])
+
   return (
+    <>
+
+{loading && <Spinner/>}
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
       <h2 className="text-2xl font-bold mb-4">Add Product</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -332,11 +349,19 @@ const AddProduct = () => {
         </div>
 
         {/* Submit Button */}
-        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-md">
-          Submit
-        </button>
+        <div className="md:col-span-2 text-right">
+          <button
+            type="submit"
+            className=" bg-blue-600 hover:bg-blue-700 opacity-100 text-white p-3 mt-3 rounded-md hover:opacity-90 transition"
+
+          >
+            Submit
+          </button>
+          </div>
       </form>
     </div>
+
+    </>
   );
 };
 

@@ -5,12 +5,13 @@ import { FaTachometerAlt, FaBoxOpen } from 'react-icons/fa';
 import { PRIVATE_ROUTES } from '@routes/routes';
 import { MdDashboard } from "react-icons/md";
 import { BsBoxFill } from "react-icons/bs";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { GoDotFill } from "react-icons/go";
 
 export const CustomSidebar = (props) => {
   const { setBroken, toggled, setToggled } = props;
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();  // Use useLocation hook
 
   const menuItems = [
     {
@@ -32,12 +33,15 @@ export const CustomSidebar = (props) => {
 
   ];
 
-  const isActive = (path) => location.pathname === path ? 'bg-gray-200' : ''; // Tailwind active color
- 
+   // Function to check if the current path is active
+   const isActive = (path) => {
   
-   // Function to check if any submenu under the current main menu is active
-   const isSubMenuActive = (subMenu) => {
-    return subMenu.some(item => location.pathname === item.path) ? 'bg-gray-200' : '';
+    return location.pathname.replace(/\/$/, '') === path.replace(/\/$/, '') ? 'bg-gray-200' : '';
+  };
+
+  // Function to check if any submenu under the current main menu is active
+  const isSubMenuActive = (subMenu) => {
+    return subMenu.some(item => location.pathname.replace(/\/$/, '') === item.path.replace(/\/$/, '')) ? 'bg-gray-200' : '';
   };
 
   return (
@@ -83,7 +87,7 @@ export const CustomSidebar = (props) => {
            
               <MenuItem key={`subMenu${subIndex}`} className={isActive(subMenuItem.path)} component={ <Link to={subMenuItem.path}/>}>
                 <p className="flex items-center gap-1">
-                  <GoDotFill className="text-red-500 mx-2" /> {subMenuItem.label}
+                  <GoDotFill className="text-blue-900 mx-2" /> {subMenuItem.label}
                 </p>
               </MenuItem>
           ))}
