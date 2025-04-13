@@ -1,59 +1,79 @@
+// Routes Paths and utility function to create dynamic routes
 import { PRIVATE_ROUTES } from '@routes/routes';
 import { generateRoute } from '@utils/utils';
+
+// react hooks
 import React, { useEffect, useState } from 'react';
+
+// redux hooks to dispatch actions and reducers
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, Link } from 'react-router-dom';
 import { getProductDetail } from '@redux/thunk/productThunk';
+
+// react router dom hook to access query aparams and link to redirect to other pages
+import { useParams, Link } from 'react-router-dom';
+
+// UI Components loader and back button
 import Spinner from '@components/ui/loader/Spinner';
-import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from 'react-icons/io';
 import Back from '@components/ui/button/Back';
 
+// react icons
+import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from 'react-icons/io';
+
+// Helper function to render stars based on rating value
+
+const renderStars = (rating) => {
+  const stars = [];
+  const fullStars = Math.floor(rating); 
+  const halfStar = rating % 1 >= 0.5;  
+  const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(<IoMdStar key={`full-${i}`} className="text-yellow-500 inline text-lg" />);
+  }
+
+  if (halfStar) {
+    stars.push(<IoMdStarHalf key="half" className="text-yellow-500 inline text-lg" />);
+  }
+
+  for (let i = 0; i < emptyStars; i++) {
+    stars.push(<IoMdStarOutline key={`empty-${i}`} className="text-yellow-500 inline text-lg" />);
+  }
+
+  return stars;
+};
+
+
 const ProductDetail = () => {
-  const [activeTab, setActiveTab] = useState('details'); // State for active tab
-
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const halfStar = rating % 1 >= 0.5;
-    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<IoMdStar key={`full-${i}`} className="text-yellow-500 inline text-lg" />);
-    }
-
-    if (halfStar) {
-      stars.push(<IoMdStarHalf key="half" className="text-yellow-500 inline text-lg" />);
-    }
-
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<IoMdStarOutline key={`empty-${i}`} className="text-yellow-500 inline text-lg" />);
-    }
-
-    return stars;
-  };
-
-  const { id } = useParams();
+  const [activeTab, setActiveTab] = useState('details'); // State to manage the active tab
+  const { id } = useParams(); // get product id from url 
   const dispatch = useDispatch();
-  const { productInfo, loading } = useSelector((state) => state.product);
+  const { productInfo, loading } = useSelector((state) => state.product); // Access product data and loading state from Redux
 
+    // get product details when component mounts or ID changes
   useEffect(() => {
     if (id) {
       dispatch(getProductDetail(id));
     }
   }, [id, dispatch]);
 
+    // Show loader while data is being fetched
   if (loading) return <Spinner />;
 
   return (
     <>
+    {/*  back button */}
+
       <Back />
       <div className="w-full mx-auto p-4 bg-white rounded-lg shadow-lg">
+      {/* Product overview section */}
         <div className="flex items-center mb-6">
           <img src={productInfo?.thumbnail} alt={productInfo?.title} className="w-48 h-48 object-cover rounded-md" />
           <div className="ml-6">
             <h2 className="text-2xl font-semibold text-gray-800">{productInfo?.title}</h2>
             <p className="text-md text-gray-500 mt-2">{productInfo?.description}</p>
             <p className="text-xl text-gray-900 font-semibold mt-2">${productInfo?.price}</p>
+
+            {/* Render rating stars */}
             <p className="text-sm text-gray-600 mt-1">
               {renderStars(productInfo?.rating)}
             </p>
@@ -63,7 +83,7 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Tab Navigation */}
+       {/* Tabs for switching between details and reviews */}
         <div className="mt-6 flex border-b border-gray-300">
           <button
             className={`py-2 px-4 text-md font-normal  ${activeTab === 'details' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
@@ -130,6 +150,7 @@ const ProductDetail = () => {
 
             </>
           ) : (
+             // Product reviews tab
             <div>
               <h3 className="text-xl font-semibold text-gray-800">Reviews</h3>
               <div className="mt-4">
@@ -148,6 +169,7 @@ const ProductDetail = () => {
           )}
         </div>
 
+{/*  navigate to Update Product page */}
         <div className="mt-8">
           <Link
             to={generateRoute(PRIVATE_ROUTES.UPDATE_PRODUCT, { id: id })}
