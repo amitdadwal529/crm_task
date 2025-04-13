@@ -1,40 +1,27 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductDetail, updateProduct } from '@redux/thunk/productThunk';
 import Spinner from '@components/ui/loader/Spinner';
-
+import { productSchema, transformFormToProductData, transformProductToFormValues } from '@utils/formUtils';
 import FormInput from '@components/ui/form/FormInput';
 import FormTextarea from '@components/ui/form/FormTextArea';
 import NumberInput from '@components/ui/form/NumberInput';
 import DimensionFields from '@components/ui/form/DimensionFields';
+import { PRIVATE_ROUTES } from '@routes/routes';
+import { generateRoute } from '@utils/utils';
 
-const schema = yup.object().shape({
-  title: yup.string().required('Title is required'),
-  description: yup.string().required('Description is required'),
-  category: yup.string().required('Category is required'),
-  price: yup.number().typeError('Must be a number').positive('Price must be positive').required('Price is required'),
-  discountPercentage: yup.number().typeError('Must be a number').required('Discount is required'),
-  brand: yup.string().required('Brand is required'),
-  weight: yup.number().typeError('Must be a number').required('Weight is required'),
-  dimensions: yup.object().shape({
-    width: yup.number().typeError('Width must be a number').required('Width is required'),
-    height: yup.number().typeError('Height must be a number').required('Height is required'),
-    depth: yup.number().typeError('Depth must be a number').required('Depth is required'),
-  }),
-  warrantyInformation: yup.string().required('Warranty info required'),
-  shippingInformation: yup.string().required('Shipping info required'),
-  availabilityStatus: yup.string().required('Availability status required'),
-  returnPolicy: yup.string().required('Return policy required'),
-  minimumOrderQuantity: yup.number().typeError('Must be a number').required('Min order required'),
-});
+
+const updateProductSchema = productSchema.omit([
+  'sku',
+]);
 
 const UpdateProduct = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { productInfo, loading } = useSelector((state) => state.product);
 
   const {
@@ -43,7 +30,7 @@ const UpdateProduct = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(updateProductSchema),
   });
 
   useEffect(() => {
@@ -52,34 +39,18 @@ const UpdateProduct = () => {
 
   useEffect(() => {
     if (productInfo && Object.keys(productInfo).length > 0) {
-      reset({
-        title: productInfo.title || '',
-        description: productInfo.description || '',
-        category: productInfo.category || '',
-        price: productInfo.price || '',
-        discountPercentage: productInfo.discountPercentage || '',
-        brand: productInfo.brand || '',
-        weight: productInfo.weight || '',
-        dimensions: {
-          width: productInfo?.dimensions?.width || '',
-          height: productInfo?.dimensions?.height || '',
-          depth: productInfo?.dimensions?.depth || '',
-        },
-        warrantyInformation: productInfo.warrantyInformation || '',
-        shippingInformation: productInfo.shippingInformation || '',
-        availabilityStatus: productInfo.availabilityStatus || '',
-        returnPolicy: productInfo.returnPolicy || '',
-        minimumOrderQuantity: productInfo.minimumOrderQuantity || '',
-      });
+      reset(transformProductToFormValues(productInfo))
     }
   }, [productInfo, reset]);
 
   const onSubmit = (data) => {
-    data.dimensions.width = Number(data.dimensions.width);
-    data.dimensions.height = Number(data.dimensions.height);
-    data.dimensions.depth = Number(data.dimensions.depth);
-
-    dispatch(updateProduct({ id: id, data: data }));
+    const cleanedData = transformFormToProductData(data);
+    try {
+       dispatch(updateProduct({ id, data: cleanedData }));
+      navigate(generateRoute(PRIVATE_ROUTES.PRODUCT_DETAIL, { id }));
+    } catch (error) {
+      console.error('Update failed:', error);
+    }
   };
 
   if (loading) return <Spinner />;
@@ -92,6 +63,9 @@ const UpdateProduct = () => {
         <FormInput label="Category" name="category" register={register} error={errors.category} />
         <NumberInput label="Price" name="price" register={register} error={errors.price} />
         <NumberInput label="Discount %" name="discountPercentage" register={register} error={errors.discountPercentage} />
+        <NumberInput label="Rating" name="rating" type="number" register={register} error={errors.rating} />
+        <NumberInput label="Stock" name="stock" type="number" register={register} error={errors.stock} />
+        <FormInput label="Tags (comma separated)" name="tags" register={register} error={errors.tags} />
         <FormInput label="Brand" name="brand" register={register} error={errors.brand} />
         <NumberInput label="Weight" name="weight" register={register} error={errors.weight} />
 

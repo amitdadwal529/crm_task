@@ -44,3 +44,39 @@ export const defaultProductValues = {
   minimumOrderQuantity: '',
 };
 
+// utils/transformUtils.js
+
+export const transformProductToFormValues = (product) => ({
+  title: product.title || '',
+  description: product.description || '',
+  category: product.category || '',
+  price: product.price || '',
+  discountPercentage: product.discountPercentage || '',
+  rating: product.rating || '',
+  stock: product.stock || '',
+  tags: product.tags?.join(', ') || '',
+  brand: product.brand || '',
+  weight: product.weight || '',
+  dimensions: {
+    width: product.dimensions?.width || '',
+    height: product.dimensions?.height || '',
+    depth: product.dimensions?.depth || '',
+  },
+  warrantyInformation: product.warrantyInformation || '',
+  shippingInformation: product.shippingInformation || '',
+  availabilityStatus: product.availabilityStatus || '',
+  returnPolicy: product.returnPolicy || '',
+  minimumOrderQuantity: product.minimumOrderQuantity || '',
+});
+
+export const transformFormToProductData = (data) => ({
+  ...data,
+  tags: data.tags.split(',').map((tag) => tag.trim()),
+  dimensions: {
+    width: Number(data.dimensions.width),
+    height: Number(data.dimensions.height),
+    depth: Number(data.dimensions.depth),
+  },
+});
+
+
