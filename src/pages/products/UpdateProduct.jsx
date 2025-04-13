@@ -26,12 +26,9 @@ import DimensionFields from '@components/ui/form/DimensionFields';
 // utility function for form  and product schema
 import { productSchema, transformFormToProductData, transformProductToFormValues } from '@utils/formUtils';
 
-
 // Rount constant and utility function
 import { PRIVATE_ROUTES } from '@routes/routes';
 import { generateRoute } from '@utils/utils';
-
-
 
 const updateProductSchema = productSchema.omit([
   'sku',
@@ -65,11 +62,14 @@ const UpdateProduct = () => {
     }
   }, [productInfo, reset]);
 
-  // from submission 
-  const onSubmit = (data) => {
+  // form submission 
+  const onSubmit = async(data) => {
     const dataToSubmit = transformFormToProductData(data); // transform form data
     try {
-      dispatch(updateProduct({ id, data: dataToSubmit }));  // dispatch update action
+      // Dispatch the thunk and unwrap the result of a thunk action and return either the resolved value or throw an error if the action fails.
+      await dispatch(updateProduct({ id, data: dataToSubmit })).unwrap(); 
+
+      // If successful, navigate to the product detail page
       navigate(generateRoute(PRIVATE_ROUTES.PRODUCT_DETAIL, { id })); // Redirect to product detail page
     } catch (error) {
       console.error('Update failed:', error); // handle error
@@ -82,24 +82,24 @@ const UpdateProduct = () => {
   return (
     <>
       {/* Header Section */}
-      <div className='flex  items-center '>
+      <div className='flex items-center'>
         <Back />
-        <h2 className="text-2xl font-bold  text-gray-800">Update Product</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Update Product</h2>
       </div>
 
       {/* Form Section */}
       <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md mt-4">
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Basic Product Info */}
-          <FormInput label="Title" name="title" register={register} error={errors.title} />
-          <FormInput label="Category" name="category" register={register} error={errors.category} />
-          <NumberInput label="Price" name="price" register={register} error={errors.price} />
-          <NumberInput label="Discount %" name="discountPercentage" register={register} error={errors.discountPercentage} />
-          <NumberInput label="Rating" name="rating" type="number" register={register} error={errors.rating} />
-          <NumberInput label="Stock" name="stock" type="number" register={register} error={errors.stock} />
-          <FormInput label="Tags (comma separated)" name="tags" register={register} error={errors.tags} />
-          <FormInput label="Brand" name="brand" register={register} error={errors.brand} />
-          <NumberInput label="Weight" name="weight" register={register} error={errors.weight} />
+          <FormInput label="Title" name="title" register={register} error={errors.title} placeholder="Enter product title" />
+          <FormInput label="Category" name="category" register={register} error={errors.category} placeholder="Enter product category" />
+          <NumberInput label="Price ($)" name="price" register={register} error={errors.price} placeholder="Enter product price" />
+          <NumberInput label="Discount %" name="discountPercentage" register={register} error={errors.discountPercentage} placeholder="Enter discount percentage" />
+          <NumberInput label="Rating" name="rating" type="number" register={register} error={errors.rating} placeholder="Enter product rating" />
+          <NumberInput label="Stock" name="stock" type="number" register={register} error={errors.stock} placeholder="Enter stock quantity" />
+          <FormInput label="Tags (comma separated)" name="tags" register={register} error={errors.tags} placeholder="Enter tags, separated by commas" />
+          <FormInput label="Brand" name="brand" register={register} error={errors.brand} placeholder="Enter product brand" />
+          <NumberInput label="Weight (kg)" name="weight" register={register} error={errors.weight} placeholder="Enter product weight" />
 
           {/* Product Dimensions */}
           <div className="md:col-span-2">
@@ -107,15 +107,15 @@ const UpdateProduct = () => {
           </div>
 
           {/* Additional Info */}
-          <FormInput label="Warranty Info" name="warrantyInformation" register={register} error={errors.warrantyInformation} />
-          <FormInput label="Shipping Info" name="shippingInformation" register={register} error={errors.shippingInformation} />
-          <FormInput label="Availability Status" name="availabilityStatus" register={register} error={errors.availabilityStatus} />
-          <FormInput label="Return Policy" name="returnPolicy" register={register} error={errors.returnPolicy} />
-          <NumberInput label="Minimum Order Qty" name="minimumOrderQuantity" register={register} error={errors.minimumOrderQuantity} />
+          <FormInput label="Warranty Info" name="warrantyInformation" register={register} error={errors.warrantyInformation} placeholder="Enter warranty information" />
+          <FormInput label="Shipping Info" name="shippingInformation" register={register} error={errors.shippingInformation} placeholder="Enter shipping information" />
+          <FormInput label="Availability Status" name="availabilityStatus" register={register} error={errors.availabilityStatus} placeholder="Enter availability status" />
+          <FormInput label="Return Policy" name="returnPolicy" register={register} error={errors.returnPolicy} placeholder="Enter return policy" />
+          <NumberInput label="Minimum Order Qty" name="minimumOrderQuantity" register={register} error={errors.minimumOrderQuantity} placeholder="Enter minimum order quantity" />
 
-          {/* Description field*/}
+          {/* Description field */}
           <div className="md:col-span-2">
-            <FormTextarea label="Description" name="description" register={register} error={errors.description} />
+            <FormTextarea label="Description" name="description" register={register} error={errors.description} placeholder="Enter product description" />
           </div>
 
           {/* Submit button */}
@@ -129,7 +129,6 @@ const UpdateProduct = () => {
           </div>
         </form>
       </div>
-
     </>
   );
 };

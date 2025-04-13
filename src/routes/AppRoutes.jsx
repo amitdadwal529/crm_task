@@ -52,6 +52,7 @@ const AppRoutes = createBrowserRouter([
     },
       ],
     },
+    // Public Routes
     {
       path: PUBLIC_ROUTES.LOG_IN,
       element: <PublicRoutes element={<Login/>} />,

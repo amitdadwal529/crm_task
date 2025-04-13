@@ -11,11 +11,12 @@ export const generateRoute = (route, params) => {
 
   return finalRoute;
 };
-
+// show success toast
 export const showSuccessToast = (message) => {
   toast.success(message);
 };
 
+// to show errror toast
 export const showErrorToast = (message) => {
   toast.error(message)
 }

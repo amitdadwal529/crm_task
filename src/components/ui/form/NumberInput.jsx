@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NumberInput = ({ label, name, register, error, step = '0.01' }) => {
+const NumberInput = ({ label, name, register, error, step = '0.01', placeholder }) => {
   return (
     <div>
       <label className="block font-medium mb-1">{label}</label>
@@ -9,6 +9,7 @@ const NumberInput = ({ label, name, register, error, step = '0.01' }) => {
         step={step}
         {...register(name)}
         className="input"
+        placeholder={placeholder}
       />
       {error && <p className="text-red-500 text-sm">{error.message}</p>}
     </div>

@@ -1,6 +1,6 @@
 const DimensionFields = ({ register, errors }) => (
     <div>
-      <h3 className="text-lg font-medium">Dimensions</h3>
+      <h3 className="text-lg font-medium">Dimensions (cm)</h3>
       <div className="grid grid-cols-3 gap-2">
         {['width', 'height', 'depth'].map((dim) => (
           <div key={dim}>

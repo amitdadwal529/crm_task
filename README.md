@@ -1,5 +1,10 @@
+
 # crm_task
 Customer Relationship Management (CRM) system.
+
+# Credentials 
+username: emilys, 
+password: emilyspass,
 
 Features
 1. Login Page

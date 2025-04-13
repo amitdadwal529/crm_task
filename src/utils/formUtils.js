@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-
+// yup validation schema for product forms
 export const productSchema = yup.object().shape({
   title: yup.string().required('Title is required'),
   description: yup.string().required('Description is required'),

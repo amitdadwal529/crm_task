@@ -9,11 +9,11 @@ const columnHelper = createColumnHelper();
 const GetProductTableColumns = (openModal) => [
   columnHelper.accessor('thumbnail', {
     header: 'Product',
-    cell: info => <img src={info.row.original.thumbnail} alt="" className='w-14 h-14' />,
+    cell: info =><Link to={generateRoute(PRIVATE_ROUTES.PRODUCT_DETAIL, { id: info.row.original.id })}> <img src={info.row.original.thumbnail} alt="" className='w-14 h-14' /></Link>,
   }),
   columnHelper.accessor('title', {
     header: 'Name',
-    cell: info => info.getValue(),
+    cell: info =><Link to={generateRoute(PRIVATE_ROUTES.PRODUCT_DETAIL, { id: info.row.original.id })}><span>{info.getValue()}</span> </Link>,
   }),
   columnHelper.accessor('brand', {
     header: 'Brand',

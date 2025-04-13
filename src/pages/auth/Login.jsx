@@ -17,6 +17,7 @@ import { FaRegEyeSlash } from 'react-icons/fa6';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
    // UI component for form inputs
 import Input from '@components/ui/form/Input';
+import Spinner from '@components/ui/loader/Spinner';
 
 // Define the validation schema 
 const validationSchema = Yup.object({
@@ -49,6 +50,7 @@ const {loading} = useSelector((state)=>state.auth)
   const handleToggle = () => {
     setShowPassword(!showPassword); // Toggle the password visibility state
   };
+  if (loading) return <Spinner />;
 
   return (
     <>
@@ -85,7 +87,7 @@ const {loading} = useSelector((state)=>state.auth)
                     className='border-0'
                   />
                   {/* Toggle icon to show/hide password */}
-                  <div className="absolute top-9 right-3" onClick={handleToggle}>
+                  <div className="cursor-pointer absolute top-9 right-3" onClick={handleToggle}>
                     {showPassword ?
                       (<FaRegEyeSlash fontSize={18} />) : // Show eye-slash icon when password is visible
                       (<MdOutlineRemoveRedEye fontSize={18} />) // Show eye icon when password is hidden
