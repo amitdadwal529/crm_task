@@ -50,8 +50,7 @@ const dataPie = {
 
 const Dashboard = () => {
   return (
-    <div>
-      <div className="p-6 bg-gray-100 min-h-screen">
+    <>
         <h1 className="text-3xl font-bold mb-6 text-gray-800">Dashboard</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -72,8 +71,8 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      
+    </>
   )
 }
 
