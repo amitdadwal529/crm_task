@@ -16,11 +16,16 @@ const StyledSidebarHeader = styled.div`
 `;
 
 
-export const SidebarHeader = ({setCollapsed, collapsed, ...rest }) => {
+export const SidebarHeader = ({ setCollapsed, collapsed, ...rest }) => {
   return (
     <StyledSidebarHeader {...rest}>
       <div className='flex justify-between items-center'>
-        {!collapsed && <img src="https://www.freepnglogos.com/uploads/logo-chatgpt-png/black-chatgpt-logo-circle-symbol-black-png-0.png" className='w-14' />}
+        {!collapsed &&
+          <div>
+            <p className='text-2xl font-bold text-blue-950'>CRM</p>
+            <p className='text-xs text-blue-500'>Customer Relation Management</p>
+          </div>
+        }
         <span onClick={() => setCollapsed(!collapsed)}>{collapsed ? <FaAnglesRight /> : <FaAnglesLeft />}</span>
       </div>
     </StyledSidebarHeader>

@@ -15,14 +15,14 @@ export const CustomSidebar = (props) => {
   const menuItems = [
     {
       label: 'Dashboard',
-      icon: <MdDashboard className="text-red-500  text-lg" />,
+      icon: <MdDashboard className="text-blue-900  text-lg" />,
       path: PRIVATE_ROUTES.DASHBOARD,
       subMenu: []
     },
    
     {
       label: 'Product Management',
-      icon: <BsBoxFill className="text-red-500" />,
+      icon: <BsBoxFill className="text-blue-900" />,
       path: '',
       subMenu: [
         { label: 'Products', path: PRIVATE_ROUTES.PRODUCTS},
