@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   flexRender,
   getCoreRowModel,
@@ -7,24 +7,26 @@ import {
 } from '@tanstack/react-table';
 import { FaEye, FaTrash } from 'react-icons/fa';
 import { AiFillEdit } from "react-icons/ai";
+import { Link } from 'react-router-dom';
+import { generateRoute } from '@utils/utils';
+import { PRIVATE_ROUTES } from '@routes/routes';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '@redux/thunk/productThunk';
 
 
 const ProductTable = () => {
-  const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
+  const{products} = useSelector((state)=>state.product)
 
   useEffect(() => {
-    fetch('https://dummyjson.com/products')
-      .then((res) => res.json())
-      .then((data) => setProducts(data.products));
+    dispatch(getProducts())
   }, []);
-
-  console.log(products, "products")
 
   const columnHelper = createColumnHelper();
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('title', {
+      columnHelper.accessor('thumbnail', {
         header: 'Product ',
         cell: info =>
           <span>
@@ -32,7 +34,7 @@ const ProductTable = () => {
           </span>,
       }),
       columnHelper.accessor('title', {
-        header: 'Product Name',
+        header: 'Name',
         cell: info => info.getValue(),
       }),
       columnHelper.accessor('brand', {
@@ -59,9 +61,15 @@ const ProductTable = () => {
         header: 'Actions',
         cell: info =>
           <div className='flex items-center justify-between'>
-            <FaEye className='text-blue-900' />
-            <AiFillEdit className='text-blue-900' />
-            <FaTrash className='text-blue-900' />
+           <Link to={generateRoute(PRIVATE_ROUTES.PRODUCT_DETAIL, {id:info.row.original.id})}>
+          <FaEye className='text-blue-900 cursor-pointer' />
+        </Link>
+        <Link to={generateRoute(PRIVATE_ROUTES.UPDATE_PRODUCT, {id:info.row.original.id})}>
+          <AiFillEdit className='text-blue-900 cursor-pointer' />
+        </Link>
+       
+          <FaTrash className='text-blue-900 cursor-pointer' />
+        
           </div>,
       }),
     ],

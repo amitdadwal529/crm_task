@@ -1,10 +1,6 @@
 import { addProduct, deleteProduct, getProductDetail, getProducts, updateProduct } from "@redux/thunk/productThunk";
 import { createSlice } from "@reduxjs/toolkit";
 import { showErrorToast, showSuccessToast } from "@utils/utils";
-import { toast } from "react-toastify";
-
-
-
 
 export const productSlice = createSlice({
     name:"product",
@@ -27,19 +23,14 @@ export const productSlice = createSlice({
             state.error = null;
         })
         .addCase(getProducts.fulfilled, (state, action) => {
-            if(action.payload.code == 200){
-                state.productlist = action.payload?.data;
+                state.products = action.payload?.products;
                 state.loading = false;
-                state.error = null;
-            }else{
-                toast.error(action.payload.message);
-            }
-           
+                state.error = null;           
         })
         .addCase(getProducts.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-            toast.error(action.payload);
+            showErrorToast("Something went wrong!")
         })
 
         // add product
@@ -51,7 +42,6 @@ export const productSlice = createSlice({
                 state.success = true;
                 state.loading = false;
                 state.error = null;
-                toast.success();
                 showSuccessToast("Product added")
            
         })
@@ -85,17 +75,17 @@ export const productSlice = createSlice({
             state.loading = true;
             state.error = null;
         })
-        .addCase(deleteProduct.fulfilled, (state, action) => {
+        .addCase(deleteProduct.fulfilled, (state) => {
                 state.success = true;
                 state.loading = false;
                 state.error = null;
-                toast.success(action.payload.message);
+                showSuccessToast("Product deleted")
         })
         .addCase(deleteProduct.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.error = action.payload;
-            toast.error(action.payload);
+            showErrorToast("Something went wrong!")
         })
         // get product details
         .addCase(getProductDetail.pending, (state) => {
@@ -113,7 +103,7 @@ export const productSlice = createSlice({
         .addCase(getProductDetail.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-            toast.error(action.payload);
+            showErrorToast("Something went wrong!")
         })
 
     }
