@@ -30,7 +30,7 @@ const Header = (props) => {
             </button>
           )}
         </div>
-        <div className="relative border border-transparent hover:border-1 hover:border-gray-300 hover:bg-orange-100 px-5 rounded-full">
+        <div className="relative border border-blue-950 hover:border-1 hover:border-transparent hover:bg-blue-200 px-5 rounded-full py-1">
           <button
             onClick={toggleDropdown}
             className="flex items-center text-gray-700 focus:outline-none"

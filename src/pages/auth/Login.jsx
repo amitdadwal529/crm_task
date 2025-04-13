@@ -40,7 +40,7 @@ const Login = () => {
   return (
     <>
         <section className="bg-gray-50 ">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
@@ -56,7 +56,7 @@ const Login = () => {
                 validation={{ required: "Username is required" }}
                 errors={errors}
                />
-                <div>
+                <div className='relative'>
                 <Input
                     label="Password"
                     name="password"
@@ -65,8 +65,9 @@ const Login = () => {
                     register={register}
                     validation={{ required: "Password is required", minLength: { value: 6, message: "Min 6 characters" } }}
                     errors={errors}
-      /> <div
-                    className="absolute top-11 right-3"
+                    />          
+                    <div
+                    className="absolute top-9 right-3"
                     onClick={handleToggle}
                   >
                     {showPassword ? (

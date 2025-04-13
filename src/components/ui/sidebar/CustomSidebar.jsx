@@ -53,7 +53,7 @@ export const CustomSidebar = (props) => {
           color: '#607489',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%', }}>
           <SidebarHeader collapsed={collapsed} setCollapsed={setCollapsed} />
 
           <Menu
@@ -67,7 +67,7 @@ export const CustomSidebar = (props) => {
       menuItem.subMenu.length === 0 ? (
         
           <MenuItem key={index} className={isActive(menuItem.path)} component={<Link to={menuItem.path} />}>
-            <p className="flex items-center gap-3 ml-2">
+            <p className="flex items-center gap-3 ml-2 ">
               {menuItem.icon} {menuItem.label}
             </p>
           </MenuItem>
