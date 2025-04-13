@@ -1,4 +1,4 @@
-// Base in production we keep it in env here i am putting it in env
+// Base Url in production we keep it in env 
 export const BASE_URL = "https://dummyjson.com" ;
 
 // Authentication Endpoints

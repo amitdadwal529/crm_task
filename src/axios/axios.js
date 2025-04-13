@@ -1,16 +1,15 @@
 import axios from "axios";
-import { toast } from "react-toastify";
-import { AUTH, BASE_URL } from "@config/config";
-import authService from "@services/authService";
+import { BASE_URL } from "@config/config"; // API Base url 
+import authService from "@services/authService"; // Authentication service 
+import { showErrorToast } from "@utils/utils"; // To show error notification
 
+// Axios Instance
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": 'application/json',
   },
 });
-
-
 
 // Interceptor to add token to request
 axiosInstance.interceptors.request.use(
@@ -41,7 +40,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest); // Retry the original request with the new token
       } catch (refreshError) {
         localStorage.clear();
-        toast.error("Session expired. Please log in again.");
+        showErrorToast("Session expired. Please log in again.");
         window.location.href = "/seller/sign-in";
         return Promise.reject(refreshError);
       }
@@ -52,6 +51,7 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+// function to make api calls
 const handleRequest = async (method, url, data = null, isMultipart = false) => {
 
   try {
@@ -69,17 +69,16 @@ const handleRequest = async (method, url, data = null, isMultipart = false) => {
     // Handle specific status codes
     switch (status) {
       case 401:
-        toast.error("Unauthorized. Redirecting to login.");
+        showErrorToast("Unauthorized. Redirecting to login.");
         break;
       case 404:
-        toast.error("Requested resource not found.");
-        window.location.href = "/not-found";
+        showErrorToast("Requested resource not found.");
         break;
       case 500:
-        toast.error(error?.response?.data?.message);
+        showErrorToast(error?.response?.data?.message);
         break;
       default:
-        toast.error(message);
+        showErrorToast(message);
     }
     console.error(`${method} Error:`, error);
     throw error;

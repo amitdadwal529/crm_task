@@ -46,6 +46,10 @@ const AppRoutes = createBrowserRouter([
           path: PRIVATE_ROUTES.UPDATE_PRODUCT,
           element: <PrivateRoute element={<UpdateProduct/>}/>,
         },
+         {
+      path: "*",
+      element: <PrivateRoute element={<NotFound/>}/>,
+    },
       ],
     },
     {

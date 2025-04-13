@@ -1,5 +1,6 @@
-import { login, getMyDetails } from '@redux/thunk/authThunk';
+import { login } from '@redux/thunk/authThunk';
 import { createSlice } from '@reduxjs/toolkit';
+import { showErrorToast, showSuccessToast } from '@utils/utils';
 import { toast } from 'react-toastify';
 
 const initialState = {
@@ -7,7 +8,6 @@ const initialState = {
   token: localStorage.getItem('accessToken') || null,
   refreshToken: localStorage.getItem('refreshToken') || null,
   myDetails: JSON.parse(localStorage.getItem('user')) || {},
-  error: null,
   loading: false,
 };
 
@@ -29,7 +29,6 @@ const authSlice = createSlice({
       // Login
       .addCase(login?.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
       .addCase(login?.fulfilled, (state, action) => {
         const payload = action.payload;
@@ -51,37 +50,13 @@ const authSlice = createSlice({
           localStorage.setItem('refreshToken', refreshToken);
           localStorage.setItem('user', JSON.stringify(userDetails));
 
-          toast.success("Login successful");
-        } else {
-          state.error = payload.message || "Login failed";
-          toast.error(state.error);
+          showSuccessToast("Login successful");
         }
       })
-      .addCase(login.rejected, (state, action) => {
+      .addCase(login.rejected, (state) => {
         state.loading = false;
-        state.error = action.payload;
-        toast.error(action.payload);
+        showErrorToast("Login failed!!");
       })
-
-      // Get My Details
-      .addCase(getMyDetails.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(getMyDetails.fulfilled, (state, action) => {
-        if (action.payload.code === 200) {
-          state.myDetails = action.payload.data;
-        } else {
-          state.error = action.payload.message;
-          toast.error(action.payload.message);
-        }
-        state.loading = false;
-      })
-      .addCase(getMyDetails.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-        toast.error(action.payload);
-      });
   },
 });
 

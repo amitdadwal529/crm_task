@@ -15,14 +15,3 @@ export const login = createAsyncThunk(
 );
 
 
-export const getMyDetails = createAsyncThunk("auth/getMyDetails", async (id, { rejectWithValue }) => {
-   
-  try {
-      const response = await authService.getMyDetails(id);
-      return response;
-  } catch (error) {
-      return rejectWithValue(error.response.data.message);
-  }
-
-})
-

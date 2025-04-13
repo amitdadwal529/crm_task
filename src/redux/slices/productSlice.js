@@ -6,7 +6,6 @@ export const productSlice = createSlice({
     name:"product",
     initialState:{
         products:[],
-        error:null,
         loading:false,
         success:false,
         productInfo:{},
@@ -22,37 +21,30 @@ export const productSlice = createSlice({
         builder
         .addCase(getProducts.pending, (state) => {
             state.loading = true;
-            state.error = null;
         })
         .addCase(getProducts.fulfilled, (state, action) => {
                 const payload = action.payload
                 state.products = payload.products;
                 state.loading = false;
-                state.error = null;  
                 state.total =  payload.total;        
         })
-        .addCase(getProducts.rejected, (state, action) => {
+        .addCase(getProducts.rejected, (state) => {
             state.loading = false;
-            state.error = action.payload;
             showErrorToast("Something went wrong!")
         })
 
         // add product
         .addCase(addProduct.pending, (state) => {
             state.loading = true;
-            state.error = null;
         })
         .addCase(addProduct.fulfilled, (state) => {
                 state.success = true;
                 state.loading = false;
-                state.error = null;
                 showSuccessToast("Product added")
-           
         })
-        .addCase(addProduct.rejected, (state, action) => {
+        .addCase(addProduct.rejected, (state) => {
             state.success = false;
             state.loading = false;
-            state.error = action.payload;
             showErrorToast("Something went wrong!")
 
         })
@@ -64,13 +56,11 @@ export const productSlice = createSlice({
         .addCase(updateProduct.fulfilled, (state) => {
                 state.success = true;
                 state.loading = false;
-                state.error = null;
                 showSuccessToast("Product updated")
         })
-        .addCase(updateProduct.rejected, (state, action) => {
+        .addCase(updateProduct.rejected, (state) => {
             state.success = false;
             state.loading = false;
-            state.error = action.payload;
             showErrorToast("Something went wrong!")
         })
 
@@ -82,13 +72,11 @@ export const productSlice = createSlice({
         .addCase(deleteProduct.fulfilled, (state) => {
                 state.success = true;
                 state.loading = false;
-                state.error = null;
                 showSuccessToast("Product deleted")
         })
-        .addCase(deleteProduct.rejected, (state, action) => {
+        .addCase(deleteProduct.rejected, (state) => {
             state.success = false;
             state.loading = false;
-            state.error = action.payload;
             showErrorToast("Something went wrong!")
         })
         // get product details
@@ -97,16 +85,11 @@ export const productSlice = createSlice({
             state.error = null;
         })
         .addCase(getProductDetail.fulfilled, (state, action) => {
-            
                 state.productInfo = action.payload;
                 state.loading = false;
-                state.error = null;
-            
-           
         })
-        .addCase(getProductDetail.rejected, (state, action) => {
+        .addCase(getProductDetail.rejected, (state) => {
             state.loading = false;
-            state.error = action.payload;
             showErrorToast("Something went wrong!")
         })
 

@@ -33,14 +33,4 @@ const getProductDetail = async (id) => {
     return response;
 };
 
-const deleteMultipleProducts = async (ids) => {
-   
-    const response = await handleRequest("DELETE", PRODUCTS.GET_ALL+"?ids="+ids);
-    return response;
-};
-
-
-
-
-
-export default {getAllProducts, addProduct, updateProduct, deleteProduct, getProductDetail, deleteMultipleProducts}
+export default {getAllProducts, addProduct, updateProduct, deleteProduct, getProductDetail}

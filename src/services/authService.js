@@ -18,22 +18,8 @@ localStorage.setItem("refreshToken", response.refreshToken);
 return response.accessToken;
 }
 
-
-const getMyDetails  = async (id=null) => {
-
-let url = AUTH.USER_DETAILS;
-
-if(id!=null){
-  url=url+`?id=${id}`
-}
-
-  const response = await handleRequest("GET",url);
-  return response;
-};
-
-
 export default {
   login,
   refreshAccessToken,
-  getMyDetails
+  
 };
