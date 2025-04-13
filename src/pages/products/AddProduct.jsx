@@ -15,12 +15,12 @@ import Back from '@components/ui/button/Back';
 const AddProduct = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.product);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
-   
+
   } = useForm({
     resolver: yupResolver(productSchema),
     defaultValues: defaultProductValues,
@@ -40,78 +40,78 @@ const AddProduct = () => {
 
 
   return (
-    <> 
-    {/* Loader */}
-     {loading && <Spinner />}
-     <div className='flex  items-center '>
-    <Back/>
-    <h2 className="text-2xl font-bold mb-4">Add Product</h2>
-    </div>
+    <>
+      {/* Loader */}
+      {loading && <Spinner />}
+      <div className='flex  items-center '>
+        <Back />
+        <h2 className="text-2xl font-bold ">Add Product</h2>
+      </div>
       <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
-     
-     {/* Form starts  */}
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6"> 
 
-      {/* Title field */}
-        <FormInput label="Title" name="title" register={register} error={errors.title} />
+        {/* Form starts  */}
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        {/* Category field */}
-        <FormInput label="Category" name="category" register={register} error={errors.category} />
+          {/* Title field */}
+          <FormInput label="Title" name="title" register={register} error={errors.title} />
 
-        {/* price field */}
-        <NumberInput label="Price" name="price" type="number" register={register} error={errors.price} />
+          {/* Category field */}
+          <FormInput label="Category" name="category" register={register} error={errors.category} />
 
-        {/*Discount field  */}
-        <NumberInput label="Discount %" name="discountPercentage" type="number" register={register} error={errors.discountPercentage} />
+          {/* price field */}
+          <NumberInput label="Price" name="price" type="number" register={register} error={errors.price} />
 
-        {/* Rating field */}
-        <NumberInput label="Rating" name="rating" type="number" register={register} error={errors.rating} />
+          {/*Discount field  */}
+          <NumberInput label="Discount %" name="discountPercentage" type="number" register={register} error={errors.discountPercentage} />
 
-        {/* Stock field  */}
-        <NumberInput label="Stock" name="stock" type="number" register={register} error={errors.stock} />
+          {/* Rating field */}
+          <NumberInput label="Rating" name="rating" type="number" register={register} error={errors.rating} />
 
-        {/*Tags field  */}
-        <FormInput label="Tags (comma separated)" name="tags" register={register} error={errors.tags} />
+          {/* Stock field  */}
+          <NumberInput label="Stock" name="stock" type="number" register={register} error={errors.stock} />
 
-        {/* Brand field  */}
-        <FormInput label="Brand" name="brand" register={register} error={errors.brand} />
+          {/*Tags field  */}
+          <FormInput label="Tags (comma separated)" name="tags" register={register} error={errors.tags} />
 
-        {/* SKU field */}
-        <FormInput label="SKU" name="sku" register={register} error={errors.sku} />
+          {/* Brand field  */}
+          <FormInput label="Brand" name="brand" register={register} error={errors.brand} />
 
-        {/*Weight field  */}
-        <NumberInput label="Weight" name="weight" type="number" register={register} error={errors.weight} />
+          {/* SKU field */}
+          <FormInput label="SKU" name="sku" register={register} error={errors.sku} />
 
-        {/* Dimension Fields  */}
-        <DimensionFields register={register} errors={errors} />
+          {/*Weight field  */}
+          <NumberInput label="Weight" name="weight" type="number" register={register} error={errors.weight} />
 
-        {/* Warranty Info Field */}
-        <FormInput label="Warranty Information" name="warrantyInformation" register={register} error={errors.warrantyInformation} />
+          {/* Dimension Fields  */}
+          <DimensionFields register={register} errors={errors} />
 
-        {/* Shipping feild  */}
-        <FormInput label="Shipping Information" name="shippingInformation" register={register} error={errors.shippingInformation} />
+          {/* Warranty Info Field */}
+          <FormInput label="Warranty Information" name="warrantyInformation" register={register} error={errors.warrantyInformation} />
 
-        {/*Availability Status field  */}
-        <FormInput label="Availability Status" name="availabilityStatus" register={register} error={errors.availabilityStatus} />
+          {/* Shipping feild  */}
+          <FormInput label="Shipping Information" name="shippingInformation" register={register} error={errors.shippingInformation} />
 
-        {/*Return Policy feild  */}
-        <FormInput label="Return Policy" name="returnPolicy" register={register} error={errors.returnPolicy} />
+          {/*Availability Status field  */}
+          <FormInput label="Availability Status" name="availabilityStatus" register={register} error={errors.availabilityStatus} />
 
-        {/*Min Order Quantity feild */}
-        <NumberInput label="Min Order Quantity" name="minimumOrderQuantity" type="number" register={register} error={errors.minimumOrderQuantity} />
+          {/*Return Policy feild  */}
+          <FormInput label="Return Policy" name="returnPolicy" register={register} error={errors.returnPolicy} />
 
-        {/*Description field  */}
-        <div className="md:col-span-2">
-          <FormTextarea label="Description" name="description" register={register} error={errors.description} />
-        </div>
+          {/*Min Order Quantity feild */}
+          <NumberInput label="Min Order Quantity" name="minimumOrderQuantity" type="number" register={register} error={errors.minimumOrderQuantity} />
 
-        {/* Submit button */}
-        <div className="md:col-span-2 text-left">
-          <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white p-3 mt-3 rounded-md">
-            Submit
-          </button>
-        </div>
-      </form>
+          {/*Description field  */}
+          <div className="md:col-span-2">
+            <FormTextarea label="Description" name="description" register={register} error={errors.description} />
+          </div>
+
+          {/* Submit button */}
+          <div className="md:col-span-2 text-left">
+            <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white p-3 mt-3 rounded-md">
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
     </>
   );

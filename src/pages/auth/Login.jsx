@@ -28,7 +28,6 @@ const Login = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
@@ -61,25 +60,20 @@ const Login = () => {
                   <Input
                     label="Password"
                     name="password"
-                    type={showPassword ? "text" : "password"}   
+                    type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
                     register={register}
                     validation={{ required: "Password is required", minLength: { value: 6, message: "Min 6 characters" } }}
                     errors={errors}
                     className='border-0'
                   />
-                  <div
-                    className="absolute top-9 right-3"
-                    onClick={handleToggle}
-                  >
-                    {showPassword ? (
-                      <FaRegEyeSlash fontSize={18} />
-                    ) : (
-                      <MdOutlineRemoveRedEye fontSize={18} />
-                    )}
+                  <div className="absolute top-9 right-3" onClick={handleToggle}>
+                    {showPassword ?
+                      (<FaRegEyeSlash fontSize={18} />) :
+                      (<MdOutlineRemoveRedEye fontSize={18} />)
+                    }
                   </div>
                 </div>
-
                 <button type="submit" className="bg-blue-800 ms-auto text-white hover:bg-blue-950 rounded-xl w-1/2 shadow-xl px-3 py-1">Submit</button>
               </form>
             </div>
