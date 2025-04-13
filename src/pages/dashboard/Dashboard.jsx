@@ -6,23 +6,27 @@ import {
   BarElement,
   LineElement,
   PointElement,
+  ArcElement,
   Tooltip,
   Legend,
   Title
 } from "chart.js";
-import { Bar, Line } from "react-chartjs-2";
+import { Bar, Line, Pie } from "react-chartjs-2";
 
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
   LineElement,
   PointElement,
+  ArcElement,
   Tooltip,
   Legend,
   Title
 );
 
+// Data for charts
 const rankingsData = {
   labels: ["Oct 18", "Oct 26", "Nov 4", "Nov 8", "Nov 16"],
   datasets: [
@@ -74,17 +78,22 @@ const impressionsData = {
   ],
 };
 
+const trafficSourcesData = {
+  labels: ["Organic", "Referral", "Direct", "Social"],
+  datasets: [
+    {
+      data: [45, 25, 20, 10],
+      backgroundColor: ["#34d399", "#60a5fa", "#facc15", "#f87171"],
+      borderWidth: 1,
+    },
+  ],
+};
+
 const Dashboard = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <div className="flex items-center gap-4">
-          <select className="border p-2 rounded-md">
-            <option>Last 30 days</option>
-          </select>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg">Edit Dashboard</button>
-        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -125,18 +134,48 @@ const Dashboard = () => {
 
         <div className="bg-white p-4 rounded-xl shadow col-span-2">
           <h2 className="font-semibold mb-2">Google Rankings Overview</h2>
-          <Bar data={rankingsData} options={{ responsive: true, plugins: { legend: { position: 'bottom' }}}} />
+          <Bar
+            data={rankingsData}
+            options={{
+              responsive: true,
+              plugins: { legend: { position: "bottom" } },
+            }}
+          />
+        </div>
+        <div className="bg-white p-4 rounded-xl shadow col-span-2 md:col-span-1">
+          <h2 className="font-semibold mb-2">Traffic Sources</h2>
+          <Pie
+            data={trafficSourcesData}
+            options={{
+              responsive: true,
+              plugins: { legend: { position: "bottom" } },
+            }}
+          />
         </div>
 
         <div className="bg-white p-4 rounded-xl shadow col-span-2">
           <h2 className="font-semibold mb-2">New/Lost Links</h2>
-          <Bar data={newLostLinksData} options={{ responsive: true, plugins: { legend: { position: 'bottom' }}}} />
+          <Bar
+            data={newLostLinksData}
+            options={{
+              responsive: true,
+              plugins: { legend: { position: "bottom" } },
+            }}
+          />
         </div>
 
         <div className="bg-white p-4 rounded-xl shadow col-span-2">
           <h2 className="font-semibold mb-2">Impressions</h2>
-          <Line data={impressionsData} options={{ responsive: true, plugins: { legend: { position: 'bottom' }}}} />
+          <Line
+            data={impressionsData}
+            options={{
+              responsive: true,
+              plugins: { legend: { position: "bottom" } },
+            }}
+          />
         </div>
+
+        
       </div>
     </div>
   );
