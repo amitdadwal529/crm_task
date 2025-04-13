@@ -59,7 +59,9 @@ const ProductTable = () => {
             <ProductTableHeader table={table} />
             <ProductTableBody table={table} />
           </table>
-          <ProductTablePagination table={table} />
+          <div className=''>
+            <ProductTablePagination table={table} />
+          </div>
         </div>
       )}
       {showModal && (
