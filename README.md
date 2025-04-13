@@ -6,7 +6,7 @@ Customer Relationship Management (CRM) system.
 username: emilys, 
 password: emilyspass,
 
-Features
+# Features
 1. Login Page
 Users can log in with a username and password.
 
