@@ -38,7 +38,7 @@ Delete: I have implemented the dummy delete product api succesfully but as we ca
 
 Uses Redux Toolkit to manage product data state.
 
-Tech Stack
+# Tech Stack
 Frontend:
 
 React.js: Main library for building the user interface.
