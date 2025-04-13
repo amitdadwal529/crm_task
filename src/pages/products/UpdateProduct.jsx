@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom'; // navigate hook to redirect to other page and useParam to access paramas from route
+import { useForm } from 'react-hook-form'; // hook from react hook form
+import { yupResolver } from '@hookform/resolvers/yup'; // yup resolver function for validation
+import { useDispatch, useSelector } from 'react-redux'; // dispatch hook to dispatch fucntion 
 import { getProductDetail, updateProduct } from '@redux/thunk/productThunk';
 import Spinner from '@components/ui/loader/Spinner';
 import { productSchema, transformFormToProductData, transformProductToFormValues } from '@utils/formUtils';
@@ -12,6 +12,7 @@ import NumberInput from '@components/ui/form/NumberInput';
 import DimensionFields from '@components/ui/form/DimensionFields';
 import { PRIVATE_ROUTES } from '@routes/routes';
 import { generateRoute } from '@utils/utils';
+import Back from '@components/ui/button/Back';
 
 
 const updateProductSchema = productSchema.omit([
@@ -56,8 +57,14 @@ const UpdateProduct = () => {
   if (loading) return <Spinner />;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Product</h2>
+    <>
+    <div className='flex  items-center '>
+    <Back/>
+    <h2 className="text-2xl font-bold mb-6 text-gray-800">Update Product</h2>
+    </div>
+
+
+    <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md mt-4">
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <FormInput label="Title" name="title" register={register} error={errors.title} />
         <FormInput label="Category" name="category" register={register} error={errors.category} />
@@ -85,16 +92,18 @@ const UpdateProduct = () => {
           <FormTextarea label="Description" name="description" register={register} error={errors.description} />
         </div>
 
-        <div className="md:col-span-2 text-right">
+        <div className="md:col-span-2 text-left">
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 opacity-100 text-white p-3 mt-3 rounded-md hover:opacity-90 transition"
+            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
           >
             Update
           </button>
         </div>
       </form>
     </div>
+
+    </>
   );
 };
 

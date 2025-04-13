@@ -13,7 +13,7 @@ const Back = () => {
   return (
     <button
       onClick={handleBack}
-      className="flex items-center text-blue-900 hover:text-blue-600 transition duration-200 p-2 rounded-lg">
+      className=" cursor-pointer flex items-center text-blue-900 hover:text-blue-600 transition duration-200 p-2 rounded-lg">
       <IoIosArrowBack  className='text-xl'/>
     </button>
   );
