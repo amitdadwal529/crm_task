@@ -7,7 +7,7 @@ const DimensionFields = ({ register, errors }) => (
             <label className="block text-sm font-medium">{dim.charAt(0).toUpperCase() + dim.slice(1)}</label>
             <input
               type="number"
-              step="0.1"
+              step="0.001"
               {...register(`dimensions.${dim}`)}
               className="input"
             />
