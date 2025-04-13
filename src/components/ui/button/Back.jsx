@@ -1,5 +1,6 @@
 import React from 'react'
 import { FaArrowLeft } from 'react-icons/fa';
+import { IoIosArrowBack } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 const Back = () => {
@@ -10,11 +11,10 @@ const Back = () => {
   };
 
   return (
-    <button 
-      onClick={handleBack} 
-      className="flex items-center text-blue-900 hover:text-blue-600 transition duration-200 p-2 bg-gray-200 rounded-lg shadow-md">
-      <FaArrowLeft className="mr-2" />
-      Back
+    <button
+      onClick={handleBack}
+      className="flex items-center text-blue-900 hover:text-blue-600 transition duration-200 p-2 rounded-lg">
+      <IoIosArrowBack  className='text-xl'/>
     </button>
   );
 };

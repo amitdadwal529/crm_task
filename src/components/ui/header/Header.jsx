@@ -2,6 +2,7 @@ import { logout } from '@redux/slices/authSlice';
 import React, { useState } from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { useDispatch, useSelector } from 'react-redux';
+import { CiLogout } from "react-icons/ci";
 
 const Header = (props) => {
   const { broken, setToggled } = props
@@ -43,9 +44,9 @@ const Header = (props) => {
             <img src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" className='w-10' />
           </button>
 
-          {dropdownOpen && (
+          {dropdownOpen &&  (
             <div
-              className="absolute right-0 mt-2 w-auto bg-white rounded-lg shadow-lg "
+              className="absolute right-0 mt-2 w-full bg-white rounded-xl shadow-2xl "
               onMouseLeave={closeDropdown}
             >
               <a
@@ -53,10 +54,10 @@ const Header = (props) => {
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 onClick={closeDropdown}
               >
-                <div className='flex'>
-                  <img src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" className='w-8 h-8 m-auto me-2' />
+                <div className='flex justify-start items-center me-auto'>
+                  <img src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_640.png" className='w-8 h-8 me-2' />
                   <div>
-                    <p className="mr-2 font-semibold">Admin</p>
+                    <p className="font-semibold">Admin</p>
                     {/* <p className='text-sm '>a***@admin.com</p> */}
                   </div>
 
@@ -65,9 +66,10 @@ const Header = (props) => {
            
               <button
                 type='button'
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                className=" px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center w-full"
                 onClick={handleLogout}
               >
+                <CiLogout className='me-2'/>
                 Logout
               </button>
             </div>

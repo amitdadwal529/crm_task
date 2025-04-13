@@ -9,14 +9,13 @@ const Layout = () => {
   return (
     <>
       <div className='flex'>
-        <CustomSidebar setBroken={setBroken} toggled={toggled} setToggled={setToggled}/>
+        <CustomSidebar setBroken={setBroken} toggled={toggled} setToggled={setToggled} />
 
         <div className='w-full '>
           <Header broken={broken} setToggled={setToggled} />
-          <div className="p-2 bg-gray-100 min-h-screen">
-
-        <Outlet />
-        </div>
+          <div className="p-5 bg-gray-100 min-h-screen">
+            <Outlet />
+          </div>
         </div>
 
       </div>
