@@ -10,6 +10,8 @@ export const productSlice = createSlice({
         loading:false,
         success:false,
         productInfo:{},
+        total:0,
+      
     },
     reducers:{
         addProductInfo:(state,action)=>{
@@ -23,9 +25,11 @@ export const productSlice = createSlice({
             state.error = null;
         })
         .addCase(getProducts.fulfilled, (state, action) => {
-                state.products = action.payload?.products;
+                const payload = action.payload
+                state.products = payload.products;
                 state.loading = false;
-                state.error = null;           
+                state.error = null;  
+                state.total =  payload.total;        
         })
         .addCase(getProducts.rejected, (state, action) => {
             state.loading = false;

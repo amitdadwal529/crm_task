@@ -14,11 +14,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct, getProducts } from '@redux/thunk/productThunk';
 import Delete from '@components/ui/modal/Delete';
 import Spinner from '@components/ui/loader/Spinner';
+import Pagination from '@components/ui/table/Pagination';
 
 
 const ProductTable = () => {
   const dispatch = useDispatch();
-  const{products, loading} = useSelector((state)=>state.product);
+  const{products, loading, total} = useSelector((state)=>state.product);
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
   const selectedProduct = useRef(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -39,8 +42,13 @@ const ProductTable = () => {
   };
 
   useEffect(() => {
-    dispatch(getProducts())
-  }, []);
+    const skip = (currentPage - 1) * limit;
+    const query = `?limit=${limit}&skip=${skip}`;
+    dispatch(getProducts(query));
+  }, [dispatch, currentPage]);
+
+  const totalPages = Math.ceil(total / limit);
+
 
   const columnHelper = createColumnHelper();
 
@@ -134,6 +142,10 @@ const ProductTable = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
       {
         showModal && 
           <Delete

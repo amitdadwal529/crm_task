@@ -2,8 +2,8 @@ import handleRequest from "@axios/axios";
 import { PRODUCTS } from "@config/config";
 import { generateRoute } from "@utils/utils";
 
-const getAllProducts = async () => {
-    const response = await handleRequest("GET",PRODUCTS.GET_ALL);
+const getAllProducts = async (queryParams) => {
+    const response = await handleRequest("GET",`${PRODUCTS.GET_ALL}${queryParams}`);
     return response;
 };
 

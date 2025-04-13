@@ -2,10 +2,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import productService from "@services/productService";
 
 
-export const getProducts =  createAsyncThunk("product/getProducts", async (url, { rejectWithValue }) => {
+export const getProducts =  createAsyncThunk("product/getProducts", async (queryParams, { rejectWithValue }) => {
 
     try {
-        const response = await productService.getAllProducts(url);
+        const response = await productService.getAllProducts(queryParams);
         return response;
     } catch (error) {
         return rejectWithValue(error.response.data.message);
