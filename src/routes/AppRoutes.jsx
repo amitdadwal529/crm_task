@@ -34,7 +34,7 @@ const AppRoutes = createBrowserRouter([
           element: <PrivateRoute element={<Products/>}/>,
         },
         {
-          path: PRIVATE_ROUTES.PRODUCTS,
+          path: PRIVATE_ROUTES.PRODUCT_DETAIL,
           element: <PrivateRoute element={<ProductDetail/>}/>,
         },
         {

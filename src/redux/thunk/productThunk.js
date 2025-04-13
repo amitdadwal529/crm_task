@@ -23,10 +23,10 @@ export const addProduct =  createAsyncThunk("product/addProduct", async (data, {
     }
 })
 
-export const updateProduct =  createAsyncThunk("product/updateProduct", async (data, { rejectWithValue }) => {
-
+export const updateProduct =  createAsyncThunk("product/updateProduct", async ({ id, data }, { rejectWithValue }) => {
+   
     try {
-        const response = await productService.updateProduct(data);
+        const response = await productService.updateProduct(id, data);
         return response;
     } catch (error) {
         return rejectWithValue(error.response.data.message);

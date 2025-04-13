@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProductDetail, updateProduct } from '@redux/thunk/productThunk';
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
   description: yup.string().required('Description is required'),
   category: yup.string().required('Category is required'),
-  price: yup.number().typeError('Must be a number').required('Price is required'),
+  price: yup.number().typeError('Must be a number').positive('Price must be positive').required('Price is required'),
   discountPercentage: yup.number().typeError('Must be a number').required('Discount is required'),
   brand: yup.string().required('Brand is required'),
   weight: yup.number().typeError('Must be a number').required('Weight is required'),
@@ -26,7 +28,8 @@ const schema = yup.object().shape({
 
 const UpdateProduct = () => {
   const { id } = useParams();
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { productInfo, loading } = useSelector((state) => state.product);
 
   const {
     register,
@@ -38,59 +41,39 @@ const UpdateProduct = () => {
   });
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await fetch(`https://dummyjson.com/products/${id}`);
-        const data = await res.json();
+    dispatch(getProductDetail(id));
+  }, [dispatch, id]);
 
-        reset({
-          title: data.title,
-          description: data.description,
-          category: data.category,
-          price: data.price,
-          discountPercentage: data.discountPercentage,
-          brand: data.brand,
-          weight: data.weight,
-          dimensions: {
-            width: data.dimensions?.width || '',
-            height: data.dimensions?.height || '',
-            depth: data.dimensions?.depth || '',
-          },
-          warrantyInformation: data.warrantyInformation || '',
-          shippingInformation: data.shippingInformation || '',
-          availabilityStatus: data.availabilityStatus || '',
-          returnPolicy: data.returnPolicy || '',
-          minimumOrderQuantity: data.minimumOrderQuantity || '',
-        });
-
-        setLoading(false);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchProduct();
-  }, [id, reset]);
+  useEffect(() => {
+    if (productInfo && Object.keys(productInfo).length > 0) {
+      reset({
+        title: productInfo.title || '',
+        description: productInfo.description || '',
+        category: productInfo.category || '',
+        price: productInfo.price || '',
+        discountPercentage: productInfo.discountPercentage || '',
+        brand: productInfo.brand || '',
+        weight: productInfo.weight || '',
+        dimensions: {
+          width: productInfo?.dimensions?.width || '',
+          height: productInfo?.dimensions?.height || '',
+          depth: productInfo?.dimensions?.depth || '',
+        },
+        warrantyInformation: productInfo.warrantyInformation || '',
+        shippingInformation: productInfo.shippingInformation || '',
+        availabilityStatus: productInfo.availabilityStatus || '',
+        returnPolicy: productInfo.returnPolicy || '',
+        minimumOrderQuantity: productInfo.minimumOrderQuantity || '',
+      });
+    }
+  }, [productInfo, reset]);
 
   const onSubmit = (data) => {
     data.dimensions.width = Number(data.dimensions.width);
     data.dimensions.height = Number(data.dimensions.height);
     data.dimensions.depth = Number(data.dimensions.depth);
 
-    fetch(`https://dummyjson.com/products/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((updated) => {
-        console.log(updated);
-        alert('Product updated successfully');
-      })
-      .catch((err) => {
-        console.error(err);
-        alert('Update failed');
-      });
+    dispatch(updateProduct({ id: id, data: data }));
   };
 
   if (loading) return <p className="text-center py-10">Loading...</p>;
@@ -116,14 +99,14 @@ const UpdateProduct = () => {
         {/* Price */}
         <div>
           <label className="block font-medium mb-1">Price</label>
-          <input type="number" {...register('price')} className="input" />
+          <input type="number" step="0.01" {...register('price')} className="input" />
           {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
         </div>
 
         {/* Discount */}
         <div>
           <label className="block font-medium mb-1">Discount %</label>
-          <input type="number" {...register('discountPercentage')} className="input" />
+          <input type="number" step="0.01" {...register('discountPercentage')} className="input" />
           {errors.discountPercentage && (
             <p className="text-red-500 text-sm">{errors.discountPercentage.message}</p>
           )}
@@ -139,7 +122,7 @@ const UpdateProduct = () => {
         {/* Weight */}
         <div>
           <label className="block font-medium mb-1">Weight</label>
-          <input type="number" {...register('weight')} className="input" />
+          <input type="number" step="0.01" {...register('weight')} className="input" />
           {errors.weight && <p className="text-red-500 text-sm">{errors.weight.message}</p>}
         </div>
 
@@ -147,9 +130,9 @@ const UpdateProduct = () => {
         <div className="md:col-span-2">
           <label className="block font-medium mb-1">Dimensions (W x H x D)</label>
           <div className="flex gap-4">
-            <input placeholder="Width" type="number" {...register('dimensions.width')} className="input" />
-            <input placeholder="Height" type="number" {...register('dimensions.height')} className="input" />
-            <input placeholder="Depth" type="number" {...register('dimensions.depth')} className="input" />
+            <input placeholder="Width" type="number" step="0.01" {...register('dimensions.width')} className="input" />
+            <input placeholder="Height" type="number" step="0.01" {...register('dimensions.height')} className="input" />
+            <input placeholder="Depth" type="number" step="0.01" {...register('dimensions.depth')} className="input" />
           </div>
           {errors.dimensions?.width && (
             <p className="text-red-500 text-sm">{errors.dimensions.width.message}</p>

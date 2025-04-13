@@ -2,6 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '@redux/thunk/productThunk';
 
 const schema = yup.object().shape({
   title: yup.string().required('Title is required'),
@@ -45,6 +47,7 @@ const schema = yup.object().shape({
 });
 
 const AddProduct = () => {
+  const dispatch = useDispatch();
  
   const {
     register,
@@ -75,28 +78,16 @@ const AddProduct = () => {
 
   // Called on form submit
   const onSubmit = (data) => {
-    // Convert tags to an array; assumes tags are comma separated.
+    // Converted tags to an array
     data.tags = data.tags.split(',').map((tag) => tag.trim());
-    // Convert string values for dimensions to numbers
+
+    // Converting string values for dimensions to numbers
     data.dimensions.width = Number(data.dimensions.width);
     data.dimensions.height = Number(data.dimensions.height);
     data.dimensions.depth = Number(data.dimensions.depth);
 
-    // Log payload to console
-    console.log('Payload:', JSON.stringify(data, null, 2));
-    addProduct(data)
+    dispatch(addProduct(data))
   };
-
-  const addProduct = (data)=>{
-    fetch('https://dummyjson.com/products/add', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-      .then(res => console.log(res.json()) )
-      .then(console.log);
-    }
-
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md mt-6">

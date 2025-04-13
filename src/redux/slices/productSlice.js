@@ -1,5 +1,6 @@
-import { addProduct, deleteProduct, getProductDetail, getProducts } from "@redux/thunk/productThunk";
+import { addProduct, deleteProduct, getProductDetail, getProducts, updateProduct } from "@redux/thunk/productThunk";
 import { createSlice } from "@reduxjs/toolkit";
+import { showErrorToast, showSuccessToast } from "@utils/utils";
 import { toast } from "react-toastify";
 
 
@@ -46,23 +47,37 @@ export const productSlice = createSlice({
             state.loading = true;
             state.error = null;
         })
-        .addCase(addProduct.fulfilled, (state, action) => {
-        
-            if(action.payload.success == true){
+        .addCase(addProduct.fulfilled, (state) => {
                 state.success = true;
                 state.loading = false;
                 state.error = null;
-                toast.success(action.payload.message);
-            }else{
-                toast.error(action.payload.message);
-            }
+                toast.success();
+                showSuccessToast("Product added")
            
         })
         .addCase(addProduct.rejected, (state, action) => {
             state.success = false;
             state.loading = false;
             state.error = action.payload;
-            toast.error(action.payload);
+            showErrorToast("Something went wrong!")
+
+        })
+        // update product
+        .addCase(updateProduct.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        .addCase(updateProduct.fulfilled, (state) => {
+                state.success = true;
+                state.loading = false;
+                state.error = null;
+                showSuccessToast("Product updated")
+        })
+        .addCase(updateProduct.rejected, (state, action) => {
+            state.success = false;
+            state.loading = false;
+            state.error = action.payload;
+            showErrorToast("Something went wrong!")
         })
 
         // delete product
@@ -71,16 +86,10 @@ export const productSlice = createSlice({
             state.error = null;
         })
         .addCase(deleteProduct.fulfilled, (state, action) => {
-        
-            if(action.payload.success == true){
                 state.success = true;
                 state.loading = false;
                 state.error = null;
                 toast.success(action.payload.message);
-            }else{
-                toast.error(action.payload.message);
-            }
-           
         })
         .addCase(deleteProduct.rejected, (state, action) => {
             state.success = false;
@@ -94,13 +103,11 @@ export const productSlice = createSlice({
             state.error = null;
         })
         .addCase(getProductDetail.fulfilled, (state, action) => {
-            if(action.payload.code == 200){
-                state.productInfo = action.payload?.data;
+            
+                state.productInfo = action.payload;
                 state.loading = false;
                 state.error = null;
-            }else{
-                toast.error(action.payload.message);
-            }
+            
            
         })
         .addCase(getProductDetail.rejected, (state, action) => {

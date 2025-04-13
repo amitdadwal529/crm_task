@@ -1,5 +1,6 @@
 import handleRequest from "@axios/axios";
 import { PRODUCTS } from "@config/config";
+import { generateRoute } from "@utils/utils";
 
 const getAllProducts = async () => {
     const response = await handleRequest("GET",PRODUCTS.GET_ALL);
@@ -13,9 +14,8 @@ const addProduct = async (data) => {
     return response;
 };
 
-const updateProduct = async (data) => {
-   
-    const response = await handleRequest("POST", PRODUCTS.UPDATE, data);
+const updateProduct = async (id,data) => {
+    const response = await handleRequest("PUT",  generateRoute(PRODUCTS.UPDATE, {id:id}), data);
     return response;
 };
 
@@ -29,7 +29,7 @@ const deleteProduct = async (id) => {
 
 const getProductDetail = async (id) => {
    
-    const response = await handleRequest("GET", PRODUCTS.GET_SINGLE+"/"+id);
+    const response = await handleRequest("GET", generateRoute(PRODUCTS.GET_SINGLE, {id:id}));
     return response;
 };
 
