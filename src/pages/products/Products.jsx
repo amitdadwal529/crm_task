@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductTable from './ProductTable'
+import ProductTable from '@components/ui/table/ProductTable'
 import { AiOutlineProduct } from 'react-icons/ai'
 
 const Products = () => {
