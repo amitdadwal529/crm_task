@@ -63,7 +63,7 @@ const handleRequest = async (method, url, data = null, isMultipart = false) => {
     );
     return response;
   } catch (error) {
-    const status = error?.response?.status;
+    const status = error?.status;
     const message = error?.message || "Something went wrong. Please try again.";
 
     // Handle specific status codes
