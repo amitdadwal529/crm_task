@@ -5,6 +5,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { PRIVATE_ROUTES } from '@routes/routes';
 import { generateRoute } from '@utils/utils';
 import { placeholderThumbnailImage } from '@config/config';
+import { getStatusBadgeClass } from '@utils/productUtils';
 
 const columnHelper = createColumnHelper();
 
@@ -56,18 +57,11 @@ const GetProductTableColumns = (openModal) => [
   columnHelper.accessor('availabilityStatus', {
     header: 'Status',
     cell: info => {
-      const status = info.row.original.availabilityStatus || 'Unknown';
-      const statusColor = status === 'Low Stock'
-        ? 'bg-amber-300'
-        : status === 'Out of Stock'
-          ? 'bg-red-400'
-          : status === 'Unknown'
-            ? 'bg-gray-300'
-            : 'bg-green-300';
-
+      const rawStatus = info.row.original.availabilityStatus || 'Unknown';
+      const statusColor = getStatusBadgeClass(rawStatus);
       return (
         <span className={`px-4 py-0.5 rounded-2xl shadow-lg ${statusColor}`}>
-          {status}
+          {rawStatus}
         </span>
       );
     },

@@ -17,3 +17,20 @@ export const loadProductsFromLocalStorage = () => {
       console.error("Failed to save to localStorage", e);
     }
   };
+
+  export const getStatusBadgeClass = (status = '') => {
+    const normalizedStatus = status.toLowerCase();
+  
+    switch (normalizedStatus) {
+      case 'low stock':
+        return 'bg-amber-300';
+      case 'out of stock':
+        return 'bg-red-400';
+      case 'in stock':
+        return 'bg-green-500';
+      default:
+        return 'bg-gray-300 text-black';
+    }
+  };
+
+  

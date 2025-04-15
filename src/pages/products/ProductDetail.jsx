@@ -20,6 +20,9 @@ import Back from '@components/ui/button/Back';
 import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from 'react-icons/io';
 import { placeholderThumbnailImage } from '@config/config';
 
+// utility function
+import { getStatusBadgeClass } from '@utils/productUtils';
+
 // Helper function to render stars based on rating value
 
 const renderStars = (rating) => {
@@ -79,8 +82,11 @@ const ProductDetail = () => {
               {renderStars(productInfo?.rating)}
             </p>
             <div className="mt-4">
-              <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-md">{productInfo?.availabilityStatus}</span>
-            </div>
+            <span
+  className={` text-xs px-2 py-1 rounded-md ${getStatusBadgeClass(productInfo?.availabilityStatus)}`}
+>
+  {productInfo?.availabilityStatus || 'Unknown'}
+</span>            </div>
           </div>
         </div>
 
@@ -152,21 +158,28 @@ const ProductDetail = () => {
             </>
           ) : (
              // Product reviews tab
-            <div>
-              <h3 className="text-xl font-semibold text-gray-800">Reviews</h3>
-              <div className="mt-4">
-                {productInfo?.reviews?.map((review, index) => (
-                  <div key={index} className="bg-gray-100 shadow-xl rounded-xl p-2 mb-4">
-                    <p className="font-medium text-lg">{review.reviewerName}</p>
-                    <p className="text-gray-600">
-                      {renderStars(review.rating)}
-                    </p>
-                    <p className="text-gray-800 mt-2 text-sm">{review.comment}</p>
-                    <p className="text-xs text-gray-500 mt-2">{new Date(review.date).toLocaleDateString()}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+             <div>
+  <h3 className="text-xl font-semibold text-gray-800">Reviews</h3>
+  <div className="mt-4">
+    {productInfo?.reviews && productInfo.reviews.length > 0 ? (
+      productInfo.reviews.map((review, index) => (
+        <div key={index} className="bg-gray-100 shadow-xl rounded-xl p-2 mb-4">
+          <p className="font-medium text-lg">{review.reviewerName}</p>
+          <p className="text-gray-600">
+            {renderStars(review.rating)}
+          </p>
+          <p className="text-gray-800 mt-2 text-sm">{review.comment}</p>
+          <p className="text-xs text-gray-500 mt-2">
+            {new Date(review.date).toLocaleDateString()}
+          </p>
+        </div>
+      ))
+    ) : (
+      <p className="text-gray-500 text-sm italic">No reviews available.</p>
+    )}
+  </div>
+</div>
+
           )}
         </div>
 

@@ -8,12 +8,22 @@ import ProductTablePagination from '@components/ui/table/Pagination';
 import Delete from '@components/ui/modal/Delete';
 import Spinner from '@components/ui/loader/Spinner';
 import GetProductTableColumns from '@components/ui/table/Columns';
+import { useSearchParams } from 'react-router-dom';
 
 const ProductTable = () => {
   const dispatch = useDispatch();
+  const tableRef = useRef(null);
 
   // pagination state 
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [searchParams, setSearchParams] = useSearchParams();
+
+const initialPageIndex = parseInt(searchParams.get('page')) || 0;
+const initialPageSize = parseInt(searchParams.get('size')) || 10;
+
+const [pagination, setPagination] = useState({
+  pageIndex: initialPageIndex,
+  pageSize: initialPageSize,
+});
   // product data & loading state
   const { products, loading,  } = useSelector(state => state.product);
 
@@ -50,7 +60,12 @@ const ProductTable = () => {
   //fetch products
   useEffect(() => {
     dispatch(getProducts());
-  }, [dispatch, pagination]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setSearchParams({
+      page: pagination.pageIndex.toString(),
+      size: pagination.pageSize.toString(),
+    });
+  }, [dispatch, pagination ,setSearchParams]);
 
   const columns = useMemo(() => GetProductTableColumns(openModal), []);
 
@@ -71,7 +86,7 @@ const ProductTable = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
+        <div ref={tableRef} className="overflow-x-auto bg-white rounded-lg shadow">
           <table className="min-w-full border border-gray-200">
             {/* table header */}
             <ProductTableHeader table={table} />

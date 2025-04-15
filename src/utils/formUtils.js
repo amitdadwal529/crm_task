@@ -64,7 +64,7 @@ export const transformProductToFormValues = (product) => ({
   discountPercentage: product.discountPercentage || '',
   rating: product.rating || '',
   stock: product.stock || '',
-  tags: product.tags?.join(', ') || '',
+  tags: product.tags?.join(',') || '',
   brand: product.brand || '',
   sku: product.sku ||'',
   weight: product.weight || '',

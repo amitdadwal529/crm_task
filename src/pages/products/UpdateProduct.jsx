@@ -109,7 +109,7 @@ const UpdateProduct = () => {
           {/* Additional Info */}
           <FormInput label="Warranty Info" name="warrantyInformation" register={register} error={errors.warrantyInformation} placeholder="Enter warranty information" />
           <FormInput label="Shipping Info" name="shippingInformation" register={register} error={errors.shippingInformation} placeholder="Enter shipping information" />
-          <FormInput label="Availability Status" name="availabilityStatus" register={register} error={errors.availabilityStatus} placeholder="Enter availability status" />
+          <FormInput label="Availability Status" name="availabilityStatus" register={register} error={errors.availabilityStatus} placeholder='e.g., "In Stock", "Low Stock" or "Out of Stock "' />
           <FormInput label="Return Policy" name="returnPolicy" register={register} error={errors.returnPolicy} placeholder="Enter return policy" />
           <NumberInput label="Minimum Order Qty" name="minimumOrderQuantity" register={register} error={errors.minimumOrderQuantity} placeholder="Enter minimum order quantity" />
 

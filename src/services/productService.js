@@ -20,8 +20,14 @@ const updateProduct = async (id,data) => {
 };
 
 
-const deleteProduct = async () => {
-  
+const deleteProduct = async (id) => {
+  /*
+  NOTE:
+  We're using a dummy API for deletion. These APIs often have a limit for valid IDs.
+   For example, if the product ID exceeds 195, the API might throw a 404 or fail.
+   Sometimes, due to local ID generation, the ID passed here might be greater than the actual dummy API limit.
+   that is why i have passed a static id 1 here 
+  */
    
     const response = await handleRequest("DELETE", generateRoute(PRODUCTS.DELETE, {id:1}));
     return response;

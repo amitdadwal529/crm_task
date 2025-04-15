@@ -43,7 +43,6 @@ export const productSlice = createSlice({
         .addCase(addProduct.fulfilled, (state) => {
             state.success = true;
             state.loading = false;
-            
             showSuccessToast("Product added");
         })
         .addCase(addProduct.rejected, (state) => {
@@ -60,13 +59,6 @@ export const productSlice = createSlice({
         .addCase(updateProduct.fulfilled, (state) => {
             state.success = true;
             state.loading = false;
-
-            // const updatedProduct = action.payload;
-            // state.products = state.products.map((p) =>
-            //     p.id === updatedProduct.id ? updatedProduct : p
-            // );
-            // // save updated product to local storage
-            // saveProductsToLocalStorage(state.products);
             showSuccessToast("Product updated");
         })
         .addCase(updateProduct.rejected, (state) => {
@@ -105,10 +97,6 @@ export const productSlice = createSlice({
         })
         .addCase(getProductDetail.fulfilled, (state, action) => {
             const product = action.payload; 
-            console.log(product, "product, ")
-            // If API doesn't return the product, fallback to local data
-            // const localProduct = state.products.find((p) => p.id === product?.id);
-        
             state.productInfo =  product || {};
             state.loading = false;
         })

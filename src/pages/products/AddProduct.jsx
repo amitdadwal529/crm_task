@@ -100,7 +100,7 @@ const AddProduct = () => {
           <FormInput label="Shipping Information" name="shippingInformation" placeholder="Enter shipping information" register={register} error={errors.shippingInformation} />
 
           {/* Availability Status field */}
-          <FormInput label="Availability Status" name="availabilityStatus" placeholder='e.g., "In Stock", "Low Stock" or "Out Of Stock "' register={register} error={errors.availabilityStatus} />
+          <FormInput label="Availability Status" name="availabilityStatus" placeholder='e.g., "In Stock", "Low Stock" or "Out of Stock "' register={register} error={errors.availabilityStatus} />
 
           {/* Return Policy field */}
           <FormInput label="Return Policy" name="returnPolicy" placeholder="Enter return policy" register={register} error={errors.returnPolicy} />

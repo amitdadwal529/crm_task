@@ -38,10 +38,10 @@ export const addProduct = createAsyncThunk(
       const response = await productService.addProduct(data);
 
       // Save to localStorage
-      const existingProducts = JSON.parse(localStorage.getItem("products")) || [];
+      const existingProducts = loadProductsFromLocalStorage() || [];
       const dataToSave = {id: parseInt(existingProducts?.length +1), ...data};
       const updatedProducts = [dataToSave, ...existingProducts];
-      localStorage.setItem("products", JSON.stringify(updatedProducts));
+      saveProductsToLocalStorage(updatedProducts)
 
       return response;
     } catch (error) {
@@ -61,7 +61,7 @@ export const updateProduct = createAsyncThunk(
 
       const existingProducts = JSON.parse(localStorage.getItem("products")) || [];
       const updatedProducts = existingProducts.map((p) => (parseInt(p.id) === parseInt(id) ? dataToSave : p));
-      localStorage.setItem("products", JSON.stringify(updatedProducts));
+      saveProductsToLocalStorage(updatedProducts)
 
       return dataToSave;
     } catch (error) {
@@ -76,11 +76,12 @@ export const deleteProduct = createAsyncThunk(
   "product/deleteProduct",
   async (id, { rejectWithValue }) => {
     try {
-      await productService.deleteProduct();
+      await productService.deleteProduct(id);
 
       const existingProducts = JSON.parse(localStorage.getItem("products")) || [];
       const updatedProducts = existingProducts.filter((p) => parseInt(p.id) !== parseInt(id));
-      localStorage.setItem("products", JSON.stringify(updatedProducts));
+      saveProductsToLocalStorage(updatedProducts)
+
 
       return id;
     } catch (error) {
@@ -97,8 +98,6 @@ export const getProductDetail = createAsyncThunk(
     try {
       // Check localStorage first
       const products = JSON.parse(localStorage.getItem("products")) || [];
-      console.log(products);
-      console.log(typeof(id));
       const product = products.find((p) => p.id == id);
       if (product) {
         // If the product is found in localStorage, return it
@@ -106,8 +105,8 @@ export const getProductDetail = createAsyncThunk(
       }
 
       // If not found in localStorage, fall back to the API call
-      await productService.getProductDetail(id);
-      return product;
+      const response = await productService.getProductDetail(id);
+      return response;
     } catch (error) {
       return rejectWithValue(error?.response?.data?.message || "Failed to fetch product details");
     }
