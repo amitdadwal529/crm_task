@@ -5,15 +5,19 @@ import { createSlice } from "@reduxjs/toolkit";
 // toast utility functions
 import { showErrorToast, showSuccessToast } from "@utils/utils";
 
+// localstorage utility function 
+import { loadProductsFromLocalStorage, saveProductsToLocalStorage } from "@utils/productUtils";
+
+
 // Creating the product slice
 export const productSlice = createSlice({
     name: "product",
     initialState: {
-        products: [],         
+        products: loadProductsFromLocalStorage() || [] ,         
         loading: false,      
         success: false,       
         productInfo: {},     
-        total: 0,            
+        total: loadProductsFromLocalStorage().length || 0,            
     },
     extraReducers: (builder) => {
         builder
@@ -39,6 +43,7 @@ export const productSlice = createSlice({
         .addCase(addProduct.fulfilled, (state) => {
             state.success = true;
             state.loading = false;
+            
             showSuccessToast("Product added");
         })
         .addCase(addProduct.rejected, (state) => {
@@ -55,6 +60,13 @@ export const productSlice = createSlice({
         .addCase(updateProduct.fulfilled, (state) => {
             state.success = true;
             state.loading = false;
+
+            // const updatedProduct = action.payload;
+            // state.products = state.products.map((p) =>
+            //     p.id === updatedProduct.id ? updatedProduct : p
+            // );
+            // // save updated product to local storage
+            // saveProductsToLocalStorage(state.products);
             showSuccessToast("Product updated");
         })
         .addCase(updateProduct.rejected, (state) => {
@@ -68,9 +80,16 @@ export const productSlice = createSlice({
             state.loading = true;
             state.error = null;
         })
-        .addCase(deleteProduct.fulfilled, (state) => {
+        .addCase(deleteProduct.fulfilled, (state, action) => {
             state.success = true;
             state.loading = false;
+
+            const id = action.payload;
+            state.products = state.products.filter((p) => p.id !== id);
+            state.total = state.products.length;
+             
+            // update local stoarge with updated list
+            saveProductsToLocalStorage(state.products);
             showSuccessToast("Product deleted");
         })
         .addCase(deleteProduct.rejected, (state) => {
@@ -85,7 +104,12 @@ export const productSlice = createSlice({
             state.error = null;
         })
         .addCase(getProductDetail.fulfilled, (state, action) => {
-            state.productInfo = action.payload;
+            const product = action.payload; 
+            console.log(product, "product, ")
+            // If API doesn't return the product, fallback to local data
+            // const localProduct = state.products.find((p) => p.id === product?.id);
+        
+            state.productInfo =  product || {};
             state.loading = false;
         })
         .addCase(getProductDetail.rejected, (state) => {

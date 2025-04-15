@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'; // hook from react hook form 
+import { useForm, FormProvider } from 'react-hook-form'; // hook from react hook form 
 import { yupResolver } from '@hookform/resolvers/yup';  // yup resolver function from yup 
 import { useDispatch, useSelector } from 'react-redux'; // redux hook to dispatch actions and use state from store 
 import { addProduct } from '@redux/thunk/productThunk'; // thunk to add product
@@ -14,11 +14,12 @@ import Back from '@components/ui/button/Back';
 
 const AddProduct = () => {
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.product);
+  const { loading} = useSelector((state) => state.product);
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+  
     formState: { errors },
   } = useForm({
     resolver: yupResolver(productSchema),
@@ -55,6 +56,8 @@ const AddProduct = () => {
       <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md mt-6">
 
         {/* Form starts */}
+        <FormProvider >
+
         <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Title field */}
@@ -97,7 +100,7 @@ const AddProduct = () => {
           <FormInput label="Shipping Information" name="shippingInformation" placeholder="Enter shipping information" register={register} error={errors.shippingInformation} />
 
           {/* Availability Status field */}
-          <FormInput label="Availability Status" name="availabilityStatus" placeholder="Enter availability status" register={register} error={errors.availabilityStatus} />
+          <FormInput label="Availability Status" name="availabilityStatus" placeholder='e.g., "In Stock", "Low Stock" or "Out Of Stock "' register={register} error={errors.availabilityStatus} />
 
           {/* Return Policy field */}
           <FormInput label="Return Policy" name="returnPolicy" placeholder="Enter return policy" register={register} error={errors.returnPolicy} />
@@ -110,13 +113,13 @@ const AddProduct = () => {
             <FormTextarea label="Description" name="description" placeholder="Enter product description" register={register} error={errors.description} />
           </div>
 
-          {/* Submit button */}
           <div className="md:col-span-2 text-left">
             <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white p-3 mt-3 rounded-md">
               Submit
             </button>
           </div>
         </form>
+        </FormProvider>
       </div>
     </>
   );

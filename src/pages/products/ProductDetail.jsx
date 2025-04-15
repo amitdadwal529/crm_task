@@ -18,6 +18,7 @@ import Back from '@components/ui/button/Back';
 
 // react icons
 import { IoMdStar, IoMdStarHalf, IoMdStarOutline } from 'react-icons/io';
+import { placeholderThumbnailImage } from '@config/config';
 
 // Helper function to render stars based on rating value
 
@@ -67,7 +68,7 @@ const ProductDetail = () => {
       <div className="w-full mx-auto p-4 bg-white rounded-lg shadow-lg">
       {/* Product overview section */}
         <div className="flex items-center mb-6">
-          <img src={productInfo?.thumbnail} alt={productInfo?.title} className="w-48 h-48 object-cover rounded-md" />
+          <img src={productInfo?.thumbnail?productInfo?.thumbnail:placeholderThumbnailImage} alt={productInfo?.title} className="w-48 h-48 object-cover rounded-md" />
           <div className="ml-6">
             <h2 className="text-2xl font-semibold text-gray-800">{productInfo?.title}</h2>
             <p className="text-md text-gray-500 mt-2">{productInfo?.description}</p>

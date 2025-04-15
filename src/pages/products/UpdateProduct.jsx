@@ -30,9 +30,6 @@ import { productSchema, transformFormToProductData, transformProductToFormValues
 import { PRIVATE_ROUTES } from '@routes/routes';
 import { generateRoute } from '@utils/utils';
 
-const updateProductSchema = productSchema.omit([
-  'sku',
-]);
 
 const UpdateProduct = () => {
   const { id } = useParams();  // get product ID from URL
@@ -47,7 +44,7 @@ const UpdateProduct = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(updateProductSchema), // validation schema
+    resolver: yupResolver(productSchema), // validation schema
   });
 
   // get product detail
@@ -67,6 +64,7 @@ const UpdateProduct = () => {
     const dataToSubmit = transformFormToProductData(data); // transform form data
     try {
       // Dispatch the thunk and unwrap the result of a thunk action and return either the resolved value or throw an error if the action fails.
+  
       await dispatch(updateProduct({ id, data: dataToSubmit })).unwrap(); 
 
       // If successful, navigate to the product detail page
@@ -99,6 +97,8 @@ const UpdateProduct = () => {
           <NumberInput label="Stock" name="stock" type="number" register={register} error={errors.stock} placeholder="Enter stock quantity" />
           <FormInput label="Tags (comma separated)" name="tags" register={register} error={errors.tags} placeholder="Enter tags, separated by commas" />
           <FormInput label="Brand" name="brand" register={register} error={errors.brand} placeholder="Enter product brand" />
+            {/* SKU field */}
+            <FormInput label="SKU" name="sku" placeholder="Enter SKU" register={register} error={errors.sku} />
           <NumberInput label="Weight (kg)" name="weight" register={register} error={errors.weight} placeholder="Enter product weight" />
 
           {/* Product Dimensions */}

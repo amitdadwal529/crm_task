@@ -12,11 +12,18 @@ import GetProductTableColumns from '@components/ui/table/Columns';
 const ProductTable = () => {
   const dispatch = useDispatch();
 
-  // product data & loading state
-  const { products, loading, total } = useSelector(state => state.product);
-
   // pagination state 
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  // product data & loading state
+  const { products, loading,  } = useSelector(state => state.product);
+
+  const paginatedData = useMemo(() => {
+    const start = pagination.pageIndex * pagination.pageSize;
+    const end = start + pagination.pageSize;
+    return products.slice(start, end);
+  }, [products, pagination]);
+  
+
 
   // ref to hold selected product id to delete
   const selectedProduct = useRef(null);
@@ -42,16 +49,15 @@ const ProductTable = () => {
 
   //fetch products
   useEffect(() => {
-    const skip = pagination.pageIndex * pagination.pageSize;
-    dispatch(getProducts(`?skip=${skip}&limit=${pagination.pageSize}`));
+    dispatch(getProducts());
   }, [dispatch, pagination]);
 
   const columns = useMemo(() => GetProductTableColumns(openModal), []);
 
   const table = useReactTable({
-    data: products,
+    data: paginatedData,
     columns,
-    pageCount: total > 0 ? Math.ceil(total / pagination.pageSize) : 0,
+    pageCount: Math.ceil(products.length / pagination.pageSize),
     state: { pagination },
     onPaginationChange: setPagination,
     manualPagination: true,

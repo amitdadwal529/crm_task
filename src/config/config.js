@@ -18,4 +18,6 @@ export const PRODUCTS = {
     DELETE : "/products/:id"
 }
 
+// Placeholder thumbnail image
 
+export const placeholderThumbnailImage = "https://picsum.photos/200/300";

@@ -19,7 +19,17 @@ export const productSchema = yup.object().shape({
   }),
   warrantyInformation: yup.string().required(),
   shippingInformation: yup.string().required(),
-  availabilityStatus: yup.string().required(),
+ availabilityStatus: yup
+  .string()
+  .required("Availability status is required")
+  .test(
+    "valid-status",
+    'Availability status must be "In Stock", "Low Stock", or "Out of Stock"',
+    (value) =>
+      ["in stock", "low stock", "out of stock"].includes(
+        value?.toLowerCase()
+      )
+  ),
   returnPolicy: yup.string().required(),
   minimumOrderQuantity: yup.number().typeError('Minimum order quantity must be a number').required(),
 });
@@ -56,6 +66,7 @@ export const transformProductToFormValues = (product) => ({
   stock: product.stock || '',
   tags: product.tags?.join(', ') || '',
   brand: product.brand || '',
+  sku: product.sku ||'',
   weight: product.weight || '',
   dimensions: {
     width: product.dimensions?.width || '',
@@ -67,6 +78,7 @@ export const transformProductToFormValues = (product) => ({
   availabilityStatus: product.availabilityStatus || '',
   returnPolicy: product.returnPolicy || '',
   minimumOrderQuantity: product.minimumOrderQuantity || '',
+  thumbnail:product.thumbnail || '',
 });
 
 export const transformFormToProductData = (data) => ({
