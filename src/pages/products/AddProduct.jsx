@@ -1,7 +1,7 @@
 import { useForm, FormProvider } from 'react-hook-form'; // hook from react hook form 
 import { yupResolver } from '@hookform/resolvers/yup';  // yup resolver function from yup 
 import { useDispatch, useSelector } from 'react-redux'; // redux hook to dispatch actions and use state from store 
-import { addProduct } from '@redux/thunk/productThunk'; // thunk to add product
+import { addProduct, getProducts } from '@redux/thunk/productThunk'; // thunk to add product
 import Spinner from '@components/ui/loader/Spinner'; // loader 
 import { productSchema, defaultProductValues } from '@utils/formUtils'; // yup validation schema for form 
 import FormInput from '@components/ui/form/FormInput'; //  Input field component for text inputs 
@@ -11,6 +11,7 @@ import NumberInput from '@components/ui/form/NumberInput'; // Input field compon
 import { useNavigate } from 'react-router-dom'; // navigate hook to redirect 
 import { PRIVATE_ROUTES } from '@routes/routes'; // routes path for private pages
 import Back from '@components/ui/button/Back';
+import { useEffect } from 'react';
 
 const AddProduct = () => {
   const dispatch = useDispatch();
@@ -44,6 +45,9 @@ const AddProduct = () => {
       console.error('Product creation failed:', error); // handle error
     }
   };
+  useEffect(()=>{
+      dispatch(getProducts());
+  },[])
 
   if (loading) return <Spinner />;
   

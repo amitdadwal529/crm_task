@@ -2,6 +2,17 @@
 # crm_task
 Customer Relationship Management (CRM) system.
 
+ # Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd crm_task
+
+   Install dependencies
+   npm install
+
+   Start the development server 
+   npm run dev
+
 # Credentials 
 username: emilys, 
 password: emilyspass,
@@ -27,16 +38,14 @@ Displays graphs with dummy data using Chart.js and React react-chartjs-2.
 Graphs for tracking Sales Overview, Customer Impressions, and Traffic Sources.
 
 
-4. Product Management (CRUD)
-Create: Users can add new products with name, description, and price.
+### 4. Product Management (CRUD)
 
-Read: Users can view a list of all products.
+- **Create:** Users can add new products with name, description, and price.
+- **Read:** Users can view a list of all products.
+- **Update:** Dummy update product API implemented (Note: changes won’t persist due to API limitations).
+- **Delete:** Dummy delete product API implemented (Note: changes won’t persist due to API limitations).
+-We have performed full CRUD operations locally using **localStorage** and **Redux Toolkit** to ensure a seamless user experience even with limited API functionality.
 
-Update: I have implemented the dummy update product api succesfully but as we can't change thier server so you wont see any changes  
-
-Delete: I have implemented the dummy delete product api succesfully but as we can't change thier server so you wont see any changes  
-
-Uses Redux Toolkit to manage product data state.
 
 # Tech Stack
 Frontend:
